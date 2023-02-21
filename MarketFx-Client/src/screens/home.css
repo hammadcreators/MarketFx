@@ -1,0 +1,32 @@
+.Header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    
+}
+
+
+body{
+    background-color: "#333";
+}
+
+.logo{
+    padding: 10px;
+}
+
+.search{
+    border-radius: 1;
+    
+    
+}
+
+.func{
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    
+}
+
+.logbuttons{
+    margin: 0 30px;
+}
