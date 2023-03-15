@@ -44,26 +44,26 @@ const NewsInfoDescription = styled.p`
 `;
 
 
-const NewsComponent = ({news}) => {
-    const {image, title, time, description} = news;
+const NewsComponent = ({ news }) => {
+  const { urlToImage, title, publishedAt, description } = news;
   return (
     <NewsContainer>
-        {
-            image?   <NewsImageContainer>
-            <NewsImage src={image}/>
-          </NewsImageContainer>
-            : null      
-        }
-    <NewsInfo>
-      <NewsInfoTitle>
-        {title}
-      </NewsInfoTitle>
-      <NewsInfoTime>{time}</NewsInfoTime>
-      <NewsInfoDescription>
-        {description}
-      </NewsInfoDescription>
-    </NewsInfo>
-  </NewsContainer>
+      {
+        urlToImage ? <NewsImageContainer>
+          <NewsImage src={urlToImage} />
+        </NewsImageContainer>
+          : null
+      }
+      <NewsInfo>
+        <NewsInfoTitle>
+          {title}
+        </NewsInfoTitle>
+        <NewsInfoTime>{publishedAt}</NewsInfoTime>
+        <NewsInfoDescription>
+          {description}
+        </NewsInfoDescription>
+      </NewsInfo>
+    </NewsContainer>
   )
 }
 

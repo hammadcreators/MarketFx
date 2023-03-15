@@ -1,6 +1,6 @@
-import { NavLink } from "react-router-dom";
+
 import { FaSearch } from "react-icons/fa";
-import { InputGroup, Form, TabContainer } from "react-bootstrap";
+import { InputGroup, Form } from "react-bootstrap";
 import styled from "styled-components";
 
 // import "./home.css";
@@ -8,6 +8,8 @@ import NewsComponent from "../components/NewsComponent";
 import AppButton from "../components/AppButton";
 import AppFooter from "../components/AppFooter";
 import NewsData from "../components/NewsData";
+import { useEffect, useState } from "react";
+import { NewsApi } from "../Api/NewsApi";
 
 const newsList = [
   {
@@ -177,6 +179,18 @@ const Left = styled.div`
 
 
 const Home = () => {
+  const [fetchedNews, setFetchedNews] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await NewsApi.get(`/everything?q=bitcoin`);
+        setFetchedNews(response.articles);
+      } catch (ex) {
+        alert(ex)
+      }
+    })();
+  })
   return (
     <div>
       <div className="Header">
@@ -266,7 +280,7 @@ const Home = () => {
               <Tab>Forex News</Tab>
             </TabsContainer>
 
-            {newsList.map((news) => {
+            {fetchedNews.map((news) => {
               return <NewsComponent news={news} />;
             })}
 
@@ -281,13 +295,13 @@ const Home = () => {
             {/* displauy:L flex; justofy-content: space-=between, flex: 1, flex: 1, flex: 1, flex: 1 */}
 
 
-            <NewsData/>
-            
+            <NewsData />
+
           </Right>
         </MiniContainer>
       </Container>
 
-            
+
 
       <AppFooter />
     </div>
