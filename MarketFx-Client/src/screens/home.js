@@ -7,9 +7,11 @@ import styled from "styled-components";
 import NewsComponent from "../components/NewsComponent";
 import AppButton from "../components/AppButton";
 import AppFooter from "../components/AppFooter";
+
 import NewsData from "../components/NewsData";
 import { useEffect, useState } from "react";
 import { NewsApi } from "../Api/NewsApi";
+import Header from "../components/Header";
 
 const newsList = [
   {
@@ -211,32 +213,8 @@ const Home = () => {
   }, [])
   return (
     <div>
-      <div className="Header">
-        <div className="Logo">
-          <p>MarketFx</p>
-        </div>
-        <div className="func">
-          <div className="search">
-            <InputGroup className="mb-3">
-              <Form.Control
-                placeholder="Recipient's username"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-              />
-              <InputGroup.Text id="basic-addon2">
-                <FaSearch />{" "}
-              </InputGroup.Text>
-            </InputGroup>
-          </div>
-          <div className="logbuttons">
-            <button className="SignUp btn btn-primary mr-4">SignUp</button>
-            <button className="Login btn btn-outline-primary ml-5">
-              Login
-            </button>
-          </div>
-        </div>
-      </div>
-      <nav></nav>
+      
+      <Header />
 
       <Container>
         <h2>Market News</h2>
