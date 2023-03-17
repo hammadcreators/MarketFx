@@ -4,6 +4,14 @@ import Form from "./../utilities/Forms";
 import axios from "axios";
 import { MarketFxApi } from "../Api/MarketFxApi";
 import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  width: 84%;
+  margin: 50px auto;
+  border: 1px solid #eee;
+  padding: 11px;
+  border-radius: 4px;
+`;
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,14 +19,6 @@ const Register = () => {
   const [validate, setValidate] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [contactNumber, setContactNumber] = useState("");
-
-  const StyledContainer = styled.div`
-    width: 84%;
-    margin: 50px auto;
-    border: 1px solid #eee;
-    padding: 11px;
-    border-radius: 4px;
-  `;
 
   const validateRegister = () => {
     let isValid = true;

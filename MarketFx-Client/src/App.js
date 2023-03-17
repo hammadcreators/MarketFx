@@ -18,7 +18,6 @@ const App = () => {
           {/* Authentication screens */}
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-
           {/*  */}
           <Route index element={<Home />} />
           <Route path="/forgot-password" element={<Forgot />} />

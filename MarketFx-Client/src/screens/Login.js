@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MarketFxApi } from "../Api/MarketFxApi";
 import Form from "./../utilities/Forms";
-
+const StyledContainer = styled.div`
+  width: 84%;
+  margin: 50px auto;
+  border: 1px solid #eee;
+  padding: 11px;
+  border-radius: 4px;
+`;
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,13 +71,7 @@ const Login = () => {
       setShowPassword(true);
     }
   };
-  const StyledContainer = styled.div`
-    width: 84%;
-    margin: 50px auto;
-    border: 1px solid #eee;
-    padding: 11px;
-    border-radius: 4px;
-  `;
+
   return (
     <StyledContainer className="row g-0 auth-wrapper">
       <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
