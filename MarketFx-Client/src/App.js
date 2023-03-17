@@ -3,6 +3,8 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Forgot from "./screens/Forgot";
 import Home from "./screens/home";
+import MarketNews from "./screens/marketNews";
+
 import ProfileSettings from "./screens/ProfileSettings";
 
 const Auth = () => {
@@ -14,7 +16,9 @@ const Auth = () => {
         <Route path="/register" component={Register} />
         <Route path="/forgot-password" component={Forgot} />
         <Route path="/profile" component={ProfileSettings} />
-        <Route path="/" component={Login} />
+        <Route path="/" component={Home} />
+        <Route path="/MarketNews" component={MarketNews} />
+
     </Switch>
     </Router>
       
