@@ -18,9 +18,9 @@ const userRouter = express.Router();
 // Register the user
 userRouter.post("/register", async (req, res) => {
   console.log("RAN");
-  let { name, password, email, contactNumber } = req.body;
+  let { name, password, email, mobile } = req.body;
   try {
-    console.log({ name, password, email, contactNumber });
+    console.log({ name, password, email, mobile });
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     password = hash;
@@ -28,7 +28,7 @@ userRouter.post("/register", async (req, res) => {
       name: name,
       password: password,
       email: email,
-      contactNumber: contactNumber,
+      mobile: mobile,
     });
 
     // Creattin a token
@@ -56,10 +56,10 @@ userRouter.post("/login", async (req, res) => {
     // If the user is found compare the passwords
     const match = await bcrypt.compare(password, user.password);
 
-    // If the passwor didnt match
+    // If the password didnt match
     if (!match) return res.status(401).json({ message: "Password mismatch" });
     const token = jwt.sign({ user: user }, SECRET_KEY);
-    // If the password matched
+    // If the password matches
     return res
       .status(200)
       .json({ message: "User found", info: user, token: token });
@@ -76,7 +76,7 @@ userRouter.get("/me", authMidddlware, async (req, res) => {
 
 // Update the user..
 userRouter.patch("/update", authMidddlware, async (req, res) => {
-  const { name, password, email, contactNumber } = req.body;
+  const { name, password, email, mobile } = req.body;
   const user = req.user;
   const obj = {};
 

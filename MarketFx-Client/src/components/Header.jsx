@@ -57,8 +57,8 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link href="#login">LOGIN</Nav.Link>
-              <Nav.Link href="#register">REGISTER</Nav.Link>
+              <Nav.Link href="/">LOGIN</Nav.Link>
+              <Nav.Link href="/register">REGISTER</Nav.Link>
             </Nav>
 
             <Form className='d-flex'>

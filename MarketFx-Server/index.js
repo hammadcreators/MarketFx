@@ -6,6 +6,7 @@ var cors = require("cors");
 const userRoute = require("./app/routes/User");
 const customerSupportRoute = require("./app/routes/CustomerSupport");
 const watchlistRoute = require("./app/routes/Watchlist");
+const profileRoute = require("./app/routes/ProfileRouter")
 
 const PORT = 5000;
 const app = express();
@@ -18,6 +19,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use("/user", userRoute);
 app.use("/customersupport", customerSupportRoute)
 app.use("/watchlist", watchlistRoute)
+app.use("/profile", profileRoute);
 
 mongoose
   .connect(url)
@@ -28,6 +30,6 @@ mongoose
     console.log("Failed to connect to the db");
   });
 
-app.listen(PORT, () => {
-  console.log("server has started");
+app.listen(PORT,() => {
+  console.log("server has started on port 3001");
 });

@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Password is required field"],
   },
 
-  contactNumber: {
+  mobile: {
     type: Number,
     required: [true, "Contact Number must be a number"],
   },
