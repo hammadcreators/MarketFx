@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Forgot from "./screens/Forgot";
@@ -6,23 +6,29 @@ import Home from "./screens/home";
 import MarketNews from "./screens/marketNews";
 
 import ProfileSettings from "./screens/ProfileSettings";
+import EconomicCalender from "./screens/EconomicCalender";
+import Header from "./components/Header";
+import Layout from "./components/Layout";
 
-const Auth = () => {
+const App = () => {
   return (
-    <Router>
-    <Switch>
-    <Route path="/home" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/forgot-password" component={Forgot} />
-        <Route path="/profile" component={ProfileSettings} />
-        <Route path="/" component={Home} />
-        <Route path="/MarketNews" component={MarketNews} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* Authentication screens */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
 
-    </Switch>
-    </Router>
-      
+          {/*  */}
+          <Route index element={<Home />} />
+          <Route path="/forgot-password" element={<Forgot />} />
+          <Route path="/profile" element={<ProfileSettings />} />
+          <Route path="/MarketNews" element={<MarketNews />} />
+          <Route path="/EconomicCalender" element={<EconomicCalender />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
-export default Auth;
+export default App;

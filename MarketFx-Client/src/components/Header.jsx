@@ -9,11 +9,14 @@ import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import InputGroup from 'react-bootstrap/InputGroup';
-
+import {
+  Outlet
+} from 'react-router-dom';
 const Header = () => {
+  const token = localStorage.getItem("token");
 
 
-
+  
   const StyledContainer = styled(Container)`
     background-color: #3b4859;
     padding: 10px 0px;
@@ -40,8 +43,12 @@ const Header = () => {
     justify-content: center;
     cursor: pointer;
   `;
+  
+  
+  
   return (
     <>
+    
       <StyledNavbar className='shadow-0' expand="lg">
         <Container>
           <Navbar.Brand href="#home">
@@ -57,7 +64,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link href="/">LOGIN</Nav.Link>
+              <Nav.Link href="/">{token? "LOGOUT": "LOGOUT"}</Nav.Link>
               <Nav.Link href="/register">REGISTER</Nav.Link>
             </Nav>
 
@@ -86,6 +93,9 @@ const Header = () => {
 
       </StyledContainer>
 
+
+
+      
     </>
 
 

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Form from "./../utilities/Forms";
 import axios from "axios";
+import { MarketFxApi } from "../Api/MarketFxApi";
+import styled from "styled-components";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -9,6 +11,15 @@ const Register = () => {
   const [validate, setValidate] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [contactNumber, setContactNumber] = useState("");
+
+  const StyledContainer = styled.div`
+    width: 84%;
+    margin: 50px auto;
+    border: 1px solid #eee;
+    padding: 11px;
+    border-radius: 4px;
+  `;
+
   const validateRegister = () => {
     let isValid = true;
 
@@ -47,16 +58,16 @@ const Register = () => {
     if (validate) {
       try {
         alert(contactNumber);
-        const response = await fetch(
-          "http://307e-206-84-151-86.ngrok.io/user/register",
-          {
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
+        const response = await MarketFxApi.post("/register", {
+          name,
+          password,
+          email,
+          mobile: contactNumber,
+        });
 
-            body: JSON.stringify({ name, password, email, contactNumber }),
-          }
-        );
-
-        alert(response.data);
+        console.log(response);
+        localStorage.setItem("token", response.token);
+        window.location.href = "http://localhost:3000/home";
       } catch (ex) {
         alert(ex.message);
       }
@@ -72,10 +83,16 @@ const Register = () => {
   };
 
   return (
-    <div className="row g-0 auth-wrapper">
+    <StyledContainer className="row g-0 auth-wrapper">
       <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-        <div className="auth-background-holder"></div>
-        <div className="auth-background-mask"></div>
+        {/* <div className="auth-background-holder"></div>
+        <div className="auth-background-mask"></div> */}
+        <img
+          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+          alt="login form"
+          className="rounded-start w-100"
+          style={{ height: "100%", objectFit: "cover" }}
+        />
       </div>
 
       <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
@@ -226,7 +243,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </div>
+    </StyledContainer>
   );
 };
 

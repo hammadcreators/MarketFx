@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { MarketFxApi } from "../Api/MarketFxApi";
 import Form from "./../utilities/Forms";
 
 const Login = () => {
@@ -35,16 +37,24 @@ const Login = () => {
     return isValid;
   };
 
-  const authenticate = (e) => {
+  const authenticate = async (e) => {
     e.preventDefault();
 
     const validate = validateLogin();
 
     if (validate) {
-      setValidate({});
-      setEmail("");
-      setPassword("");
-      alert("Successfully Login");
+      try {
+        const response = await MarketFxApi.post("/login", {
+          email,
+          password,
+        });
+
+        console.log(response);
+        localStorage.setItem("token", response.token);
+        window.location.href = "http://localhost:3000/home";
+      } catch (ex) {
+        alert(ex.message);
+      }
     }
   };
 
@@ -55,12 +65,22 @@ const Login = () => {
       setShowPassword(true);
     }
   };
-
+  const StyledContainer = styled.div`
+    width: 84%;
+    margin: 50px auto;
+    border: 1px solid #eee;
+    padding: 11px;
+    border-radius: 4px;
+  `;
   return (
-    <div className="row g-0 auth-wrapper">
+    <StyledContainer className="row g-0 auth-wrapper">
       <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-        <div className="auth-background-holder"></div>
-        <div className="auth-background-mask"></div>
+        <img
+          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+          alt="login form"
+          className="rounded-start w-100"
+          style={{ height: "100%", objectFit: "cover" }}
+        />
       </div>
 
       <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
@@ -186,7 +206,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div>
+    </StyledContainer>
   );
 };
 

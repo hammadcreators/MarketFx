@@ -1,4 +1,3 @@
-
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { InputGroup, Form } from "react-bootstrap";
 import styled from "styled-components";
@@ -12,6 +11,8 @@ import NewsData from "../components/NewsData";
 import { useEffect, useState } from "react";
 import { NewsApi } from "../Api/NewsApi";
 import Header from "../components/Header";
+
+import CalenderDetail from "../components/CalenderDetail";
 
 const newsList = [
   {
@@ -40,7 +41,6 @@ const newsList = [
     
 Headline US inflation fell to 6% from 6.4% as expected, while core inflation edged 0.1% lower to 5.5%.`,
   },
-
 
   {
     image: undefined,
@@ -72,6 +72,10 @@ const Container = styled.div`
   display: flex;
   margin: 20px auto;
   flex-direction: column;
+
+  @media (max-width: 1920px) {
+    width: 90%;
+  }
   width: 70%;
 `;
 
@@ -148,7 +152,7 @@ const FeaturedNewsTime = styled.p`
 `;
 
 const TabsContainer = styled.div`
-  margin: 20px  0px;
+  margin: 20px 0px;
   display: flex;
   flex: 1;
   justify-content: space-around;
@@ -174,81 +178,71 @@ const Left = styled.div`
   flex-direction: ${(props) => (props.column ? "column" : "row")};
 `;
 
-
 // {/* Economic Calender */}
 
 const EconomicCalenderContainer = styled.div`
   height: 300px;
-    position: static;
+  position: static;
 `;
 
 const EconomicCalenderItem = styled.div`
   border-bottom: 1px solid #eeeff0;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.8s ease;
-    &:hover {
-      box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-    }
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.8s ease;
+  &:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const EconomicCalenderImpact = styled.div`
-   background-color: #82bbe7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 12px;
-    padding: 5px;
-    height: max-content;
-    font-size: 12px;
-    flex: 1;
-    width: max-content !important;
+  background-color: #82bbe7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 5px;
+  height: max-content;
+  font-size: 12px;
+  flex: 1;
+  width: max-content !important;
 `;
 
 const EconomicCalenderTitle = styled.div`
   font-weight: 700;
-    font-size: 14px;
-    flex: 2;
-    padding-left: 7px;
+  font-size: 14px;
+  flex: 2;
+  padding-left: 7px;
 `;
 
 const EconomicCalenderActualData = styled.div`
   font-weight: 700;
-    font-size: 12px;
-    flex: 1;
+  font-size: 12px;
+  flex: 1;
 `;
 
 const EconomicCalenderPreviousData = styled.div`
   font-weight: 700;
-    font-size: 12px;
-    flex: 1;
-`;  
-
-const NormalWeight = styled.span`
-    font-weight: normal;
+  font-size: 12px;
+  flex: 1;
 `;
 
-
-
-
-
-
-
+const NormalWeight = styled.span`
+  font-weight: normal;
+`;
 
 const Home = () => {
   const [fetchedNews, setFetchedNews] = useState([]);
   const [tab, setTab] = useState("economy");
 
-
   const setTabHandler = async (tab) => {
     setTab(tab);
-    await fetchNews(tab)
-  }
-
+    await fetchNews(tab);
+  };
 
   const fetchNews = async (term) => {
     try {
@@ -256,7 +250,7 @@ const Home = () => {
       const response = await NewsApi.get(`/everything?q=${term}&pageSize=10`);
       setFetchedNews(response.articles);
     } catch (ex) {
-      alert(ex)
+      alert(ex);
     }
   };
 
@@ -266,14 +260,13 @@ const Home = () => {
         const response = await NewsApi.get(`/everything?q=economy&pageSize=10`);
         setFetchedNews(response.articles);
       } catch (ex) {
-        alert(ex)
+        alert(ex);
       }
     })();
-  }, [])
+  }, []);
   return (
     <div>
-
-      <Header />
+      {/* <Header /> */}
 
       <Container>
         <h2>Market News</h2>
@@ -320,194 +313,57 @@ const Home = () => {
             </FeatureNewsList>
           </Left>
           <Right>
-
-
             {/* Economic Calender */}
 
-            <EconomicCalenderContainer>
-              <h4>Economic Calender</h4>
-              {/* This will have the border */}
-               
-              <EconomicCalenderItem>
-                {/* ?Impact */}
-                <EconomicCalenderImpact>
-                  <span> LOW </span>
-                </EconomicCalenderImpact>
-
-                {/* Tilte */}
-                <EconomicCalenderTitle>
-                  <span>Wholesale Prices MoM  <NormalWeight>(FEB)</NormalWeight> </span>
-                </EconomicCalenderTitle>
-                {/* Actual Data */}
-                <EconomicCalenderActualData>
-                  <NormalWeight>Actual: </NormalWeight> <br />
-                  <span>0.1%</span>
-                </EconomicCalenderActualData>
-
-                {/* Previous Data */}
-                <EconomicCalenderPreviousData>
-                  <NormalWeight>Previous: </NormalWeight> <br />
-                  <span>0.1%</span>
-                </EconomicCalenderPreviousData>
-
-
-                <FaAngleDown />
-
-              </EconomicCalenderItem>
-              {/* This will have the border */}
-               
-              <EconomicCalenderItem>
-                {/* ?Impact */}
-                <EconomicCalenderImpact>
-                  <span> LOW </span>
-                </EconomicCalenderImpact>
-
-                {/* Tilte */}
-                <EconomicCalenderTitle>
-                  <span>Wholesale Prices YoY  <NormalWeight>(FEB)</NormalWeight> </span>
-                </EconomicCalenderTitle>
-                {/* Actual Data */}
-                <EconomicCalenderActualData>
-                  <NormalWeight>Actual: </NormalWeight> <br />
-                  <span>8.9%</span>
-                </EconomicCalenderActualData>
-
-                {/* Previous Data */}
-                <EconomicCalenderPreviousData>
-                  <NormalWeight>Previous: </NormalWeight> <br />
-                  <span>10.6%</span>
-                </EconomicCalenderPreviousData>
-
-
-                <FaAngleDown />
-
-              </EconomicCalenderItem>
-              
-              {/* This will have the border */}
-               
-              <EconomicCalenderItem>
-                {/* ?Impact */}
-                <EconomicCalenderImpact>
-                  <span> LOW </span>
-                </EconomicCalenderImpact>
-
-                {/* Tilte */}
-                <EconomicCalenderTitle>
-                  <span>CPIF MoM   <NormalWeight>(FEB)</NormalWeight> </span>
-                </EconomicCalenderTitle>
-                {/* Actual Data */}
-                <EconomicCalenderActualData>
-                  <NormalWeight>Actual: </NormalWeight> <br />
-                  <span>0.9%</span>
-                </EconomicCalenderActualData>
-
-                {/* Previous Data */}
-                <EconomicCalenderPreviousData>
-                  <NormalWeight>Previous: </NormalWeight> <br />
-                  <span>-1.3%</span>
-                </EconomicCalenderPreviousData>
-
-
-                <FaAngleDown />
-
-              </EconomicCalenderItem>
-              
-              {/* This will have the border */}
-               
-              <EconomicCalenderItem>
-                {/* ?Impact */}
-                <EconomicCalenderImpact>
-                  <span> LOW </span>
-                </EconomicCalenderImpact>
-
-                {/* Tilte */}
-                <EconomicCalenderTitle>
-                  <span>Wholesale Prices MoM  <NormalWeight>(FEB)</NormalWeight> </span>
-                </EconomicCalenderTitle>
-                {/* Actual Data */}
-                <EconomicCalenderActualData>
-                  <NormalWeight>Actual: </NormalWeight> <br />
-                  <span>0.1%</span>
-                </EconomicCalenderActualData>
-
-                {/* Previous Data */}
-                <EconomicCalenderPreviousData>
-                  <NormalWeight>Previous: </NormalWeight> <br />
-                  <span>0.1%</span>
-                </EconomicCalenderPreviousData>
-
-
-                <FaAngleDown />
-
-              </EconomicCalenderItem>
-              {/* This will have the border */}
-               
-              <EconomicCalenderItem>
-                {/* ?Impact */}
-                <EconomicCalenderImpact>
-                  <span> LOW </span>
-                </EconomicCalenderImpact>
-
-                {/* Tilte */}
-                <EconomicCalenderTitle>
-                  <span>Wholesale Prices MoM  <NormalWeight>(FEB)</NormalWeight> </span>
-                </EconomicCalenderTitle>
-                {/* Actual Data */}
-                <EconomicCalenderActualData>
-                  <NormalWeight>Actual: </NormalWeight> <br />
-                  <span>0.1%</span>
-                </EconomicCalenderActualData>
-
-                {/* Previous Data */}
-                <EconomicCalenderPreviousData>
-                  <NormalWeight>Previous: </NormalWeight> <br />
-                  <span>0.1%</span>
-                </EconomicCalenderPreviousData>
-
-
-                <FaAngleDown />
-
-              </EconomicCalenderItem>
-              
-            </EconomicCalenderContainer>
+            <CalenderDetail />
           </Right>
         </MiniContainer>
 
         <MiniContainer>
           <Left column={true}>
-
             {/*  */}
             <TabsContainer>
-              <Tab active={tab == "economy" ? true : false} onClick={() => setTabHandler("economy")}>All News</Tab>
-              <Tab active={tab == "gold" ? true : false} onClick={() => setTabHandler("gold")}>Gold News</Tab>
+              <Tab
+                active={tab == "economy" ? true : false}
+                onClick={() => setTabHandler("economy")}
+              >
+                All News
+              </Tab>
+              <Tab
+                active={tab == "gold" ? true : false}
+                onClick={() => setTabHandler("gold")}
+              >
+                Gold News
+              </Tab>
 
-              <Tab active={tab == "crude oil" ? true : false} onClick={() => setTabHandler("crude oil")}>Crude Oil News</Tab>
+              <Tab
+                active={tab == "crude oil" ? true : false}
+                onClick={() => setTabHandler("crude oil")}
+              >
+                Crude Oil News
+              </Tab>
 
-              <Tab active={tab == "forex" ? true : false} onClick={() => setTabHandler("forex")}>Forex News</Tab>
+              <Tab
+                active={tab == "forex" ? true : false}
+                onClick={() => setTabHandler("forex")}
+              >
+                Forex News
+              </Tab>
             </TabsContainer>
 
-
-            {fetchedNews ?
-
-              fetchedNews.map((news) => {
-                return <NewsComponent news={news} />;
-              })
-
+            {fetchedNews
+              ? fetchedNews.map((news) => {
+                  return <NewsComponent news={news} />;
+                })
               : null}
 
             <AppButton />
           </Left>
-          <Right>
-
-
-
-          </Right>
+          <Right></Right>
         </MiniContainer>
       </Container>
 
-
-
-      <AppFooter />
+      {/* <AppFooter /> */}
     </div>
   );
 };
