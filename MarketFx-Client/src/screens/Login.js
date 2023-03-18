@@ -50,7 +50,7 @@ const Login = () => {
 
     if (validate) {
       try {
-        const response = await MarketFxApi.post("/login", {
+        const response = await MarketFxApi.post("/user/login", {
           email,
           password,
         });

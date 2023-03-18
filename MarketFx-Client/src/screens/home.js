@@ -13,6 +13,7 @@ import { NewsApi } from "../Api/NewsApi";
 import Header from "../components/Header";
 
 import CalenderDetail from "../components/CalenderDetail";
+import { MarketFxApi } from "../Api/MarketFxApi";
 
 const newsList = [
   {
@@ -67,17 +68,6 @@ The latest US inflation release may not have the same market effect as in the pa
     EUR/USD is eyeing the all important US CPI release while trading at a key inflection point.`,
   },
 ];
-
-const Container = styled.div`
-  display: flex;
-  margin: 20px auto;
-  flex-direction: column;
-
-  @media (max-width: 1920px) {
-    width: 90%;
-  }
-  width: 70%;
-`;
 
 const MiniContainer = styled.div`
   display: flex;
@@ -144,11 +134,15 @@ const FeaturedNews = styled.div`
 const FeaturedNewsTitle = styled.h1`
   font-weight: 700;
   font-size: 17px;
+  padding-top: 10px;
+  margin: 0px;
 `;
 
 const FeaturedNewsTime = styled.p`
   color: lightgray;
   font-size: 12px;
+  margin-bottom: 5px;
+  text-align: right;
 `;
 
 const TabsContainer = styled.div`
@@ -238,7 +232,7 @@ const NormalWeight = styled.span`
 const Home = () => {
   const [fetchedNews, setFetchedNews] = useState([]);
   const [tab, setTab] = useState("economy");
-
+  const [calender, setCalender] = useState([]);
   const setTabHandler = async (tab) => {
     setTab(tab);
     await fetchNews(tab);
@@ -264,104 +258,122 @@ const Home = () => {
       }
     })();
   }, []);
+
+  // Useffect for the calender;
+  useEffect(() => {
+    console.log("useEffect called");
+    (async () => {
+      try {
+        const response = await MarketFxApi.get(
+          "/calender/economicCalender/tomorrow"
+        );
+        setCalender(response.calender);
+        // console.log(response.calender);
+      } catch (ex) {}
+    })();
+  }, []);
   return (
     <div>
       {/* <Header /> */}
 
-      <Container>
-        <h2>Market News</h2>
-        <MiniContainer>
-          <Left>
-            <FeaturedImg>
-              <FeaturedBox>
-                <FeaturedInfo>
-                  Gold Price – XAU/USD Eyes Support as CPI Nears and US Bond
-                  Yields Rebound
-                </FeaturedInfo>
+      <h2>Market News</h2>
+      <MiniContainer>
+        <Left>
+          <FeaturedImg>
+            <FeaturedBox>
+              <FeaturedInfo>
+                Gold Price – XAU/USD Eyes Support as CPI Nears and US Bond
+                Yields Rebound
+              </FeaturedInfo>
 
-                <FeaturedDescription>
-                  The latest US inflation release may not have the same market
-                  effect as in the past as the global interest rate backdrop has
-                  changed post-SVB failure.
-                </FeaturedDescription>
-              </FeaturedBox>
-            </FeaturedImg>
+              <FeaturedDescription>
+                The latest US inflation release may not have the same market
+                effect as in the past as the global interest rate backdrop has
+                changed post-SVB failure.
+              </FeaturedDescription>
+            </FeaturedBox>
+          </FeaturedImg>
 
-            <FeatureNewsList>
-              <p>MORE FEATURED ARTICLES</p>
-              <FeaturedNews>
-                <FeaturedNewsTitle>
-                  Euro Price Forecast: Wait & See for EUR/USD, US CPI
-                </FeaturedNewsTitle>
-                <FeaturedNewsTime>1 hour ago</FeaturedNewsTime>
-              </FeaturedNews>
+          <FeatureNewsList>
+            <p>MORE FEATURED ARTICLES</p>
+            <FeaturedNews>
+              <FeaturedNewsTitle>
+                Euro Price Forecast: Wait & See for EUR/USD, US CPI
+              </FeaturedNewsTitle>
+              <FeaturedNewsTime>1 hour ago</FeaturedNewsTime>
+            </FeaturedNews>
 
-              <FeaturedNews>
-                <FeaturedNewsTitle>
-                  Euro Price Forecast: Wait & See for EUR/USD, US CPI
-                </FeaturedNewsTitle>
-                <FeaturedNewsTime>2 hour ago</FeaturedNewsTime>
-              </FeaturedNews>
+            <FeaturedNews>
+              <FeaturedNewsTitle>
+                Euro Price Forecast: Wait & See for EUR/USD, US CPI
+              </FeaturedNewsTitle>
+              <FeaturedNewsTime>2 hour ago</FeaturedNewsTime>
+            </FeaturedNews>
 
-              <FeaturedNews>
-                <FeaturedNewsTitle>
-                  Breaking News: UK Unemployment Rate Remains Steady at 3.7%,
-                  GBP/USD Edges Lower
-                </FeaturedNewsTitle>
-                <FeaturedNewsTime>3 hour ago</FeaturedNewsTime>
-              </FeaturedNews>
-            </FeatureNewsList>
-          </Left>
-          <Right>
-            {/* Economic Calender */}
+            <FeaturedNews>
+              <FeaturedNewsTitle>
+                Breaking News: UK Unemployment Rate Remains Steady at 3.7%,
+                GBP/USD Edges Lower
+              </FeaturedNewsTitle>
+              <FeaturedNewsTime>3 hour ago</FeaturedNewsTime>
+            </FeaturedNews>
+          </FeatureNewsList>
+        </Left>
+        <Right>
+          {/* Economic Calender */}
 
-            <CalenderDetail />
-          </Right>
-        </MiniContainer>
-
-        <MiniContainer>
-          <Left column={true}>
-            {/*  */}
-            <TabsContainer>
-              <Tab
-                active={tab == "economy" ? true : false}
-                onClick={() => setTabHandler("economy")}
-              >
-                All News
-              </Tab>
-              <Tab
-                active={tab == "gold" ? true : false}
-                onClick={() => setTabHandler("gold")}
-              >
-                Gold News
-              </Tab>
-
-              <Tab
-                active={tab == "crude oil" ? true : false}
-                onClick={() => setTabHandler("crude oil")}
-              >
-                Crude Oil News
-              </Tab>
-
-              <Tab
-                active={tab == "forex" ? true : false}
-                onClick={() => setTabHandler("forex")}
-              >
-                Forex News
-              </Tab>
-            </TabsContainer>
-
-            {fetchedNews
-              ? fetchedNews.map((news) => {
-                  return <NewsComponent news={news} />;
-                })
+          <div>
+            {calender
+              ? calender.map((cal) => <CalenderDetail calender={cal} />)
               : null}
+          </div>
 
-            <AppButton />
-          </Left>
-          <Right></Right>
-        </MiniContainer>
-      </Container>
+          {/* <CalenderDetail /> */}
+        </Right>
+      </MiniContainer>
+
+      <MiniContainer>
+        <Left column={true}>
+          {/*  */}
+          <TabsContainer>
+            <Tab
+              active={tab == "economy" ? true : false}
+              onClick={() => setTabHandler("economy")}
+            >
+              All News
+            </Tab>
+            <Tab
+              active={tab == "gold" ? true : false}
+              onClick={() => setTabHandler("gold")}
+            >
+              Gold News
+            </Tab>
+
+            <Tab
+              active={tab == "crude oil" ? true : false}
+              onClick={() => setTabHandler("crude oil")}
+            >
+              Crude Oil News
+            </Tab>
+
+            <Tab
+              active={tab == "forex" ? true : false}
+              onClick={() => setTabHandler("forex")}
+            >
+              Forex News
+            </Tab>
+          </TabsContainer>
+
+          {fetchedNews
+            ? fetchedNews.map((news) => {
+                return <NewsComponent news={news} />;
+              })
+            : null}
+
+          <AppButton />
+        </Left>
+        <Right></Right>
+      </MiniContainer>
 
       {/* <AppFooter /> */}
     </div>

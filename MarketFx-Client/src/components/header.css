@@ -1,0 +1,8 @@
+#nav-dropdown{
+    color: #fff;
+    font-size: 13px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background: none !important;
+}
