@@ -13,11 +13,11 @@ const authMidddlware = (req, res, next)=>{
     try{
         const payload = jwt.verify(token, SECRET_KEY);
         // If the token is valid
-        req.user = payload.user;
+        req.userId = payload.user;
         next();
     }catch(ex){
 
-        // If the token provided was wron
+        // If the token provided was wrong
         return res.status(401).json({message: "You are not authorized to perform this action"});
     }
 }

@@ -33,5 +33,5 @@ mongoose
   });
 
 app.listen(PORT, () => {
-  console.log("server has started on port 3001");
+  console.log("server has started on port", PORT);
 });

@@ -9,6 +9,7 @@ import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { FaAngleDown, FaSearch } from 'react-icons/fa';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Dropdown from './Dropdown';
 import {
   Outlet
 } from 'react-router-dom';
@@ -77,6 +78,7 @@ const Header = () => {
                 <InputGroup.Text id="basic-addon2"><FaSearch></FaSearch></InputGroup.Text>
               </InputGroup>
             </Form>
+            <Dropdown></Dropdown>
           </Navbar.Collapse>
         </Container>
       </StyledNavbar>

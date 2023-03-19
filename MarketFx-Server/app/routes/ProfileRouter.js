@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authMidddlware = require("../middlewares/authMiddleware");
+const auth = require("../middlewares/authMiddleware");
 
 //importing the models
 const User = require("../models/User");

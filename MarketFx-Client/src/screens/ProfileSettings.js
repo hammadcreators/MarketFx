@@ -21,13 +21,13 @@ import Footer from '../components/AppFooter';
 import SubmitButton from '../components/SubmitButton';
 
 export default function ProfileSettings() {
-  const [name, setName] = useState('Maaz Haroon');
-  const [email, setEmail] = useState('maazharoon147@gmail.com');
-  const [password, setPassword] = useState('bakhtawar420');
-  const [mobile, setMobile] = useState('+92-3455105522');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [mobile, setMobile] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3001/profile')
+    fetch('http://localhost:5000/profile/profile')
       .then(response => response.json())
       .then(data => {
         setName(data.name);
@@ -41,7 +41,7 @@ export default function ProfileSettings() {
   const handleSubmit = event => {
     event.preventDefault();
     // Update the profile data by making a POST request to the server
-    fetch('http://localhost:3001/profile', {
+    fetch('http://localhost:5000/profile/profile', {
       method: 'POST',
       body: JSON.stringify({ name, email, password, mobile }),
       headers: {
@@ -51,11 +51,12 @@ export default function ProfileSettings() {
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(error => console.log(error));
+      alert("Changes made Successfully");
   };
 
   return (
     <section style={{ backgroundColor: 'white', flex: 3}}>
-    <Header></Header>
+    
 
       <MDBContainer className="py-5">
         <MDBRow>
@@ -78,7 +79,9 @@ export default function ProfileSettings() {
           <MDBCol lg="8">
             <MDBCard className="h-80">
               <MDBCardBody>
-                <form onSubmit={handleSubmit}>
+                <form method="POST"
+                 onSubmit={handleSubmit}
+                autoComplete={"off"}>
                   <MDBRow>
                     <MDBCol sm="3">
                       <MDBCardText>Full Name</MDBCardText>
@@ -135,6 +138,14 @@ export default function ProfileSettings() {
                     </MDBCol>
                   </MDBRow>
                   <hr/>
+                  <div className="text-center">
+                  <button style={{marginBottom:10}}
+                    type="submit"
+                    className="btn btn-primary w-100 theme-btn mx-auto"
+                  >
+                    Save Changes
+                  </button>
+                </div>
                   </form>
                   </MDBCardBody>
             </MDBCard>
@@ -143,8 +154,7 @@ export default function ProfileSettings() {
       </MDBContainer>
       
       <br></br>
-      <SubmitButton></SubmitButton>
-      <Footer style={{marginTop:20}}></Footer>
+      
     </section>
   );
 }

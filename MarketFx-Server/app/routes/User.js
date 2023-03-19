@@ -3,6 +3,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const bodyParser = require('body-parser');
+const speakeasy = require('speakeasy');
+const uuid = require('uuid');
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -11,9 +15,12 @@ const User = require("../models/User");
 const ChatModel = require("../models/Chat");
 const MessageModel = require('../models/Message');
 const ComplaintModel = require('../models/Complaint');
+const Otp = require("../models/Otp");
 const authMidddlware = require("../middlewares/authMiddleware");
+const config = require("../middlewares/config");
 
 const userRouter = express.Router();
+userRouter.use(bodyParser.json());
 
 // Register the user
 userRouter.post("/register", async (req, res) => {
@@ -24,6 +31,7 @@ userRouter.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     password = hash;
+
     const newUser = await User.create({
       name: name,
       password: password,
@@ -230,6 +238,190 @@ userRouter.get("/complaint/:uid/:cid", async (req, res) => {
   res.write(JSON.stringify(complaint));
   res.end();
 });
+
+
+// generate a JWT token
+function generateToken(user) {
+  const payload = {
+    id: user.id,
+    email: user.email,
+    name: user.name
+  };
+  const options = { expiresIn: '1h' };
+  const secret = 'mysecretkey';
+  return jwt.sign(payload, secret, options);
+}
+
+// send password reset email
+function sendResetPasswordEmail(email, token) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'maazharoon147@gmail.com',
+      pass: 'mjdqnevtekektwii'
+    }
+  });
+
+  const mailOptions = {
+    from: 'maazharoon147@gmail.com',
+    to: email,
+    subject: 'Password Reset Request',
+    html: `<p>You are receiving this email because you (or someone else) has requested a password reset for your account.</p>
+           <p>Please click the following link to reset your password:</p>
+           <a href="http://localhost:3000/reset-password/${token}">Reset Password</a>`
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+}
+
+// forgot password endpoint
+userRouter.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+
+  // lookup user by email
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).send('User not found');
+  }
+
+  // generate reset token and save to user
+  const token = generateToken(user);
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+  await user.save();
+
+  // send password reset email
+  sendResetPasswordEmail(email, token);
+
+  res.send('Password reset email sent');
+});
+
+// reset password endpoint
+userRouter.post('reset-password', async (req, res) => {
+  const {token,pass} = req.body;
+
+  // lookup user by reset token
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return res.status(400).send('Invalid or expired token');
+  }
+
+  // hash new password and save to user
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(pass, salt);
+  user.resetPasswordToken = null;
+  user.resetPasswordExpires = null;
+
+  await user.save();
+
+  res.send('Password reset successfully');
+});
+
+//Otp
+function generateOTP() {
+  const secret = speakeasy.generateSecret({ length: 20 });
+  const token = speakeasy.totp({
+    secret: secret.base32,
+    encoding: 'base32'
+  });
+  return { secret: secret.base32, token };
+}
+
+async function sendOTP(email, token) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'maazharoon147@gmail.com',
+      pass: 'mjdqnevtekektwii'
+    }
+  });
+
+  const mailOptions = {
+    from: 'maazharoon147@gmail.com',
+    to: email,
+    subject: '2FA Verification Code',
+    text: `Your verification code is ${token}`
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+userRouter.post('/generate-otp', async (req, res) => {
+  const { email } = req.body;
+  const { secret, token } = generateOTP();
+  const id = uuid.v4();
+
+  try {
+    await sendOTP(email, token);
+    const otp = new Otp({ id, secret });
+    await otp.save();
+    res.json({ id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to send OTP' });
+  }
+});
+
+userRouter.post('/verify-otp', async (req, res) => {
+  const {token}  = req.body;
+  const {id} = req.params.url
+
+  try {
+    const otp = await Otp.findOne({ id });
+
+    if (!otp) {
+      res.status(400).json({ message: 'Invalid OTP ID' });
+      return;
+    }
+
+    // Verify the OTP token
+    const verified = speakeasy.totp.verify({
+      secret: otp.secret,
+      encoding: 'base32',
+      token,
+      window: 1 // Allow a time skew of 1 x 30 seconds
+    });
+
+    if (!verified) {
+      res.status(401).json({ message: 'Invalid OTP' });
+      return;
+    }
+
+    // Delete the OTP from the database
+    await otp.delete();
+
+    res.json({ message: 'OTP verified' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to verify OTP' });
+  }
+});
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
 
 
 module.exports = userRouter;

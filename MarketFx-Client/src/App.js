@@ -9,6 +9,8 @@ import ProfileSettings from "./screens/ProfileSettings";
 import EconomicCalender from "./screens/EconomicCalender";
 import Header from "./components/Header";
 import Layout from "./components/Layout";
+import ResetPassword from "./screens/Reset-password";
+import Twofactorauth from "./screens/2FA";
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
           {/*  */}
           <Route index element={<Home />} />
           <Route path="/forgot-password" element={<Forgot />} />
+          <Route path="/2FA" element={<Twofactorauth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile" element={<ProfileSettings />} />
           <Route path="/MarketNews" element={<MarketNews />} />
           <Route path="/EconomicCalender" element={<EconomicCalender />} />

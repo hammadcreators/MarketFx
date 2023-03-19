@@ -1,49 +1,44 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Form from "./../utilities/Forms";
+import axios from "axios";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  width: 84%;
+  margin: 50px auto;
+  border: 1px solid #eee;
+  padding: 11px;
+  border-radius: 4px;
+`;
 
 const Forgot = () => {
   const [email, setEmail] = useState("");
   const [validate, setValidate] = useState({});
 
-  const validateforgotPassword = () => {
-    let isValid = true;
-
-    let validator = Form.validator({
-      email: {
-        value: email,
-        isRequired: true,
-        isEmail: true,
-      },
-    });
-
-    if (validator !== null) {
-      setValidate({
-        validate: validator.errors,
-      });
-
-      isValid = false;
-    }
-    return isValid;
-  };
-
-  const forgotPassword = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const validate = validateforgotPassword();
-
-    if (validate) {
-      alert("Reset password link is sent to " + email);
-      setValidate({});
-      setEmail("");
+    try {
+      await axios.post("http://localhost:5000/user/forgot-password", { email });
+      alert("An email has been sent with instructions to reset your password.");
+      window.location.href = "/reset-password";
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Please try again later.");
     }
   };
 
   return (
-    <div className="row g-0 auth-wrapper">
+    <StyledContainer className="row g-0 auth-wrapper">
       <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-        <div className="auth-background-holder"></div>
-        <div className="auth-background-mask"></div>
+        {/* <div className="auth-background-holder"></div>
+        <div className="auth-background-mask"></div> */}
+        <img
+          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+          alt="login form"
+          className="rounded-start w-100"
+          style={{ height: "100%", objectFit: "cover" }}
+        />
       </div>
 
       <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
@@ -54,7 +49,7 @@ const Forgot = () => {
               <form
                 className="auth-form"
                 method="POST"
-                onSubmit={forgotPassword}
+                onSubmit={handleSubmit}
                 autoComplete={"off"}
               >
                 <div className="email mb-3">
@@ -86,12 +81,16 @@ const Forgot = () => {
                 </div>
 
                 <div className="text-center">
-                  <button
+                <a href="/reset-password">
+                <button
                     type="submit"
                     className="btn btn-primary w-100 theme-btn mx-auto"
                   >
-                    Forgot Password
+                    Send E-Mail
                   </button>
+
+                </a>
+                  
                 </div>
               </form>
 
@@ -105,7 +104,7 @@ const Forgot = () => {
           </div>
         </div>
       </div>
-    </div>
+    </StyledContainer>
   );
 };
 
