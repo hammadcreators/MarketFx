@@ -5,18 +5,20 @@ import Logo from "../assets/images/logo-transparent.png";
 const AppFooter = () => {
   const Footer = styled.footer`
     width: 100%;
-
+    position: sticky;
     background-color: #3b4859;
-
-
   `;
 
   const FooterContainer = styled.div`
-    width: 70%;
     margin: 0px auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: 1920px) {
+      width: 90%;
+    }
+    width: 70%;
   `;
 
   const Left = styled.div`
@@ -50,7 +52,6 @@ const AppFooter = () => {
   const FooterListItem = styled.li`
     color: #b7b7b8;
   `;
-
 
   const LogoImage = styled.img`
     height: 200px;

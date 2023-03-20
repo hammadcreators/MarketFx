@@ -3,7 +3,7 @@ import axios from "axios";
 const APIKEY = "";
 
 export const MarketFxApi = axios.create({
-  baseURL: "http://127.0.0.1:5000/user",
+  baseURL: "http://127.0.0.1:5000",
 });
 
 MarketFxApi.interceptors.request.use(function (config) {

@@ -7,6 +7,7 @@ const userRoute = require("./app/routes/User");
 const customerSupportRoute = require("./app/routes/CustomerSupport");
 const watchlistRoute = require("./app/routes/Watchlist");
 const profileRoute = require("./app/routes/ProfileRouter");
+const calenderRoute = require("./app/routes/Calender");
 
 const PORT = 5000;
 const app = express();
@@ -22,6 +23,7 @@ app.use("/user", userRoute);
 app.use("/customersupport", customerSupportRoute);
 app.use("/watchlist", watchlistRoute);
 app.use("/profile", profileRoute);
+app.use("/calender", calenderRoute);
 
 mongoose
   .connect(url)

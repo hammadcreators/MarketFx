@@ -58,7 +58,7 @@ const Register = () => {
     if (validate) {
       try {
         alert(contactNumber);
-        const response = await MarketFxApi.post("/register", {
+        const response = await MarketFxApi.post("/user/register", {
           name,
           password,
           email,
