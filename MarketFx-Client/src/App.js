@@ -9,6 +9,11 @@ import ProfileSettings from "./screens/ProfileSettings";
 import EconomicCalender from "./screens/EconomicCalender";
 import Header from "./components/Header";
 import Layout from "./components/Layout";
+import DataPortal from "./screens/DataPortal";
+import ForexNews from "./screens/ForexNews";
+import CurrencyNews from "./screens/CurrencyNews";
+import CurrencyData from "./screens/CurrencyData";
+import CurrencyGraph from "./screens/CurrencyGraph";
 
 const App = () => {
   return (
@@ -24,6 +29,14 @@ const App = () => {
           <Route path="/profile" element={<ProfileSettings />} />
           <Route path="/MarketNews" element={<MarketNews />} />
           <Route path="/EconomicCalender" element={<EconomicCalender />} />
+          <Route path="/dataportal" element={<DataPortal />} />
+          <Route path="/CurrencyData" element={<CurrencyData />} />
+          <Route path="/ForexNews" element={<ForexNews />} />
+          <Route path="/CurrencyNews" element={<CurrencyNews />} />
+          <Route
+            path="/dataportal/CurrencyGraph/:passedSymbol"
+            element={<CurrencyGraph />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

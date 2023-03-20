@@ -276,7 +276,7 @@ const Home = () => {
     <div>
       {/* <Header /> */}
 
-      <h2>Market News</h2>
+      <h2>Market Overview</h2>
       <MiniContainer>
         <Left>
           <FeaturedImg>
