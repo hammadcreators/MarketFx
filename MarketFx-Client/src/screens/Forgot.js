@@ -21,7 +21,6 @@ const Forgot = () => {
     try {
       await axios.post("http://localhost:5000/user/forgot-password", { email });
       alert("An email has been sent with instructions to reset your password.");
-      window.location.href = "/reset-password";
     } catch (err) {
       console.error(err);
       alert("Something went wrong. Please try again later.");

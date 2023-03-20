@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Form from "./../utilities/Forms";
 import axios from "axios";
 import styled from "styled-components";
+import { MarketFxApi } from "../Api/MarketFxApi";
 
 const StyledContainer = styled.div`
   width: 84%;
@@ -14,13 +15,14 @@ const StyledContainer = styled.div`
 
 const ResetPassword = () => {
   const [pass, setPass] = useState("");
-  const [token, setToken] = useState("");
+  const [tken, setToken] = useState("");
   const [validate, setValidate] = useState({});
+  const { token } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/user/api/reset-password", {token,pass});
+      await MarketFxApi.post("/user/reset-password", {token,pass});
       setPass('');
       setToken('');
       alert("Password has been changed successfully.");
@@ -55,6 +57,7 @@ const ResetPassword = () => {
                 method="POST"
                 onSubmit={handleSubmit}
                 autoComplete={"off"}
+                
               >
                 <div className="password mb-3">
                   <input
@@ -67,7 +70,7 @@ const ResetPassword = () => {
                     id="pass"
                     name="pass"
                     value={pass}
-                    placeholder="Enter New Password"
+                    // placeholder="Enter New Password"
                     onChange={(e) => setPass(e.target.value)}
                   />
 

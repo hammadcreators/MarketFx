@@ -50,14 +50,14 @@ const Login = () => {
 
     if (validate) {
       try {
-        const response = await MarketFxApi.post("/user/login", {
+        const response = await MarketFxApi.post("user/login", {
           email,
           password,
         });
 
         console.log(response);
         localStorage.setItem("token", response.token);
-        window.location.href = "http://localhost:3000/home";
+        window.location.href = "http://localhost:3000";
       } catch (ex) {
         alert(ex.message);
       }

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Form from "./../utilities/Forms";
 import axios from "axios";
 import styled from "styled-components";
+import { MarketFxApi } from "../Api/MarketFxApi";
 
 const StyledContainer = styled.div`
   width: 84%;
@@ -12,28 +13,19 @@ const StyledContainer = styled.div`
   border-radius: 4px;
 `;
 
-
-const Twofactorauth = () => {
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [message, setMessage] = useState('');
+const TwoFa = () => {
+  
+  const [email, setEmail] = useState("");
   const [validate, setValidate] = useState({});
 
-  const handleGenerate = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const res = await axios.post('user/api/2fa/generate', { email });
-      setMessage(`2FA setup successful. Your secret: ${res.data.secret}`);
+      await axios.post("http://localhost:5000/user/generate-otp", { email });
+      alert("An email has been sent with instructions to reset your password.");
     } catch (err) {
-      setMessage(err.response.data.message);
-    }
-  };
-
-  const handleVerify = async () => {
-    try {
-      await axios.post('user/api/2fa/verify', { otp });
-      setMessage('Token verified');
-    } catch (err) {
-      setMessage(err.response.data.message);
+      console.error(err);
+      alert("Something went wrong. Please try again later.");
     }
   };
 
@@ -53,65 +45,38 @@ const Twofactorauth = () => {
       <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
         <div className="d-flex flex-column align-content-end">
           <div className="auth-body mx-auto">
-            <p>Two-Factor Authentication</p>
+            <p>Two Factor Authentication</p>
             <div className="auth-form-container text-start">
               <form
                 className="auth-form"
-                method="POST"
+                onSubmit={handleSubmit}
                 autoComplete={"off"}
+                
               >
-                <div className="email mb-3">
+                <div className="password mb-3">
                   <input
-                    type="email"
+                    type="text"
                     className={`form-control ${
-                      validate.validate && validate.validate.password
+                      validate.validate && validate.validate.pass
                         ? "is-invalid "
                         : ""
                     }`}
-                    id="email"
-                    name="email"
+                    id="otp"
+                    name="otp"
                     value={email}
-                    placeholder="Enter Email"
+                     placeholder="Enter Email"
                     onChange={(e) => setEmail(e.target.value)}
                   />
 
                   <div
                     className={`invalid-feedback text-start ${
-                      validate.validate && validate.validate.password
+                      validate.validate && validate.validate.pass
                         ? "d-block"
                         : "d-none"
                     }`}
                   >
-                    {validate.validate && validate.validate.password
-                      ? validate.validate.email[0]
-                      : ""}
-                  </div>
-                </div>
-
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className={`form-control ${
-                      validate.validate && validate.validate.text
-                        ? "is-invalid "
-                        : ""
-                    }`}
-                    id="token"
-                    name="token"
-                    value={otp}
-                    placeholder="Token"
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-
-                  <div
-                    className={`invalid-feedback text-start ${
-                      validate.validate && validate.validate.text
-                        ? "d-block"
-                        : "d-none"
-                    }`}
-                  >
-                    {validate.validate && validate.validate.text
-                      ? validate.validate.text[0]
+                    {validate.validate && validate.validate.pass
+                      ? validate.validate.pass[0]
                       : ""}
                   </div>
                 </div>
@@ -119,33 +84,14 @@ const Twofactorauth = () => {
                 <div className="text-center">
                   <button
                     type="submit"
-                    onClick={handleGenerate}
-                    className="btn btn-primary w-100 theme-btn mx-auto mb-2"
-                  >
-                    Send OTP
-                  </button>
-                  <br></br>
-                </div>
-                
-
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    onClick={handleVerify}
                     className="btn btn-primary w-100 theme-btn mx-auto"
                   >
-                    Verify
+                    Send Email
                   </button>
                 </div>
-                
               </form>
 
               <hr />
-              <div className="auth-option text-center pt-2">
-                <Link className="text-link" to="/login">
-                  Back to Login
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -154,4 +100,4 @@ const Twofactorauth = () => {
   );
 };
 
-export default Twofactorauth;
+export default TwoFa;

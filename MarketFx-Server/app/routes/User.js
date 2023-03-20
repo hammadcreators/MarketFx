@@ -305,8 +305,9 @@ userRouter.post('/forgot-password', async (req, res) => {
 });
 
 // reset password endpoint
-userRouter.post('reset-password', async (req, res) => {
+userRouter.post('/reset-password', async (req, res) => {
   const {token,pass} = req.body;
+  console.log(token, pass);
 
   // lookup user by reset token
   const user = await User.findOne({
@@ -339,7 +340,7 @@ function generateOTP() {
   return { secret: secret.base32, token };
 }
 
-async function sendOTP(email, token) {
+async function sendOTP(email, token, id) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -352,18 +353,21 @@ async function sendOTP(email, token) {
     from: 'maazharoon147@gmail.com',
     to: email,
     subject: '2FA Verification Code',
-    text: `Your verification code is ${token}`
+    html: `<p>Your verification code is ${token}</p>
+           <p>Please click the following link to Enable Two Factor Authentication, Enter the Verification Code There:</p>
+           <a href="http://localhost:3000/verify-otp/${id}">Verify Otp</a>`
   };
 
   await transporter.sendMail(mailOptions);
 }
 userRouter.post('/generate-otp', async (req, res) => {
   const { email } = req.body;
+  console.log(email);
   const { secret, token } = generateOTP();
   const id = uuid.v4();
 
   try {
-    await sendOTP(email, token);
+    await sendOTP(email, token, id);
     const otp = new Otp({ id, secret });
     await otp.save();
     res.json({ id });
@@ -375,7 +379,7 @@ userRouter.post('/generate-otp', async (req, res) => {
 
 userRouter.post('/verify-otp', async (req, res) => {
   const {token}  = req.body;
-  const {id} = req.params.url
+  const {id} = req.body;
 
   try {
     const otp = await Otp.findOne({ id });
@@ -390,7 +394,7 @@ userRouter.post('/verify-otp', async (req, res) => {
       secret: otp.secret,
       encoding: 'base32',
       token,
-      window: 1 // Allow a time skew of 1 x 30 seconds
+      window: 3 // Allow a time skew of 1 x 30 seconds
     });
 
     if (!verified) {
