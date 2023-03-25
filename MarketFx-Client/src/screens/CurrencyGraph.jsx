@@ -31,14 +31,14 @@ const CurrencyGraph = () => {
   useEffect(() => {
     setSymbol("FX:" + passedSymbol);
   });
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      chartRef.current &&
-        chartRef.current.update().catch((error) => console.log(error));
-    }, 100000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     chartRef.current &&
+  //       chartRef.current.update().catch((error) => console.log(error));
+  //   }, 100000);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   const handleSymbolChange = (e) => {
     setSymbol(e.target.value);
@@ -61,8 +61,9 @@ const CurrencyGraph = () => {
         interval="1"
         theme={Themes.Light}
         width="100%"
-        height="500"
+        height="750"
         ref={chartRef}
+        details="true"
       />
       {/* <TechnicalAnalysisWidget
         symbol={symbol}

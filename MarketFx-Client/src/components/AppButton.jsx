@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-
-import rightArrow from "../assets/images/right-arrow.png"
+import rightArrow from "../assets/images/right-arrow.png";
 const ButtonContainer = styled.a`
   background: #e1e1e1;
   color: #000;
@@ -21,19 +20,24 @@ const ButtonContainer = styled.a`
     background: #fafafa;
     border-color: #e1e1e1;
   }
-  
 `;
 
-
-const RightArrow= styled.img`
+const RightArrow = styled.img`
   width: 10px;
   margin-left: 10px;
 `;
-const AppButton = () => {
-  return <ButtonContainer>View All
+const AppButton = ({ title, onClick }) => {
+  return (
+    <ButtonContainer onClick={onClick}>
+      {title}
+      <RightArrow src={rightArrow} />
+    </ButtonContainer>
+  );
+};
 
-    <RightArrow src={rightArrow} />
-  </ButtonContainer>;
+AppButton.defaultProps = {
+  title: "View More",
+  onClick: () => {},
 };
 
 export default AppButton;

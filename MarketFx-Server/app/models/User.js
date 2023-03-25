@@ -26,6 +26,15 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Contact Number must be a number"],
   },
+  secret:{
+    type: String,
+  },
+  resetPasswordToken:{
+    type: String,
+  },
+  resetPasswordExpires:{
+    type: Date,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

@@ -42,6 +42,8 @@ const Left = styled.div`
 const CurrencyNews = () => {
   const [fetchedNews, setFetchedNews] = useState([]);
   const [tab, setTab] = useState("dollar");
+  const [pageSize, setPageSize] = useState(10);
+
   const setTabHandler = async (tab) => {
     setTab(tab);
     await fetchNews(tab);
@@ -50,7 +52,9 @@ const CurrencyNews = () => {
   const fetchNews = async (term) => {
     try {
       setFetchedNews([]);
-      const response = await NewsApi.get(`/everything?q=${term}&pageSize=10`);
+      const response = await NewsApi.get(
+        `/everything?q=${tab}&pageSize=${pageSize}`
+      );
       setFetchedNews(response.articles);
     } catch (ex) {
       alert(ex);
@@ -60,7 +64,7 @@ const CurrencyNews = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await NewsApi.get(`/everything?q=economy&pageSize=10`);
+        const response = await NewsApi.get(`/everything?q=dollar&pageSize=10`);
         setFetchedNews(response.articles);
       } catch (ex) {
         alert(ex);
@@ -131,7 +135,13 @@ const CurrencyNews = () => {
               })
             : null}
 
-          <AppButton />
+          <AppButton
+            title={"View More"}
+            onClick={() => {
+              setPageSize(pageSize + 10);
+              fetchNews(tab);
+            }}
+          />
         </Left>
       </MiniContainer>
     </div>

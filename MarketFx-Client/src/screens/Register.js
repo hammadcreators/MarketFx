@@ -57,7 +57,6 @@ const Register = () => {
 
     if (validate) {
       try {
-        alert(contactNumber);
         const response = await MarketFxApi.post("/user/register", {
           name,
           password,
@@ -67,7 +66,7 @@ const Register = () => {
 
         console.log(response);
         localStorage.setItem("token", response.token);
-        window.location.href = "http://localhost:3000/home";
+        window.location.href = "http://localhost:3000/login";
       } catch (ex) {
         alert(ex.message);
       }

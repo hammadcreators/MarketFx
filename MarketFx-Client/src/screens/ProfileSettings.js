@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   MDBCol,
   MDBContainer,
@@ -14,49 +14,50 @@ import {
   MDBProgressBar,
   MDBIcon,
   MDBListGroup,
-  MDBListGroupItem
-} from 'mdb-react-ui-kit';
-import Header from '../components/Header';
-import Footer from '../components/AppFooter';
-import SubmitButton from '../components/SubmitButton';
+  MDBListGroupItem,
+} from "mdb-react-ui-kit";
+import Header from "../components/Header";
+import Footer from "../components/AppFooter";
+import SubmitButton from "../components/SubmitButton";
+import { MarketFxApi } from "../Api/MarketFxApi";
 
 export default function ProfileSettings() {
-  const [name, setName] = useState('Maaz Haroon');
-  const [email, setEmail] = useState('maazharoon147@gmail.com');
-  const [password, setPassword] = useState('bakhtawar420');
-  const [mobile, setMobile] = useState('+92-3455105522');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [user, setUser] = useState("");
 
-  useEffect(() => {
-    fetch('http://localhost:3001/profile')
-      .then(response => response.json())
-      .then(data => {
-        setName(data.name);
-        setEmail(data.email);
-        setPassword(data.password);
-        setMobile(data.mobile);
-      })
-      .catch(error => console.log(error));
+  //   fetch('http://localhost:5000/profile/profile')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       setName(data.name);
+  //       setEmail(data.email);
+  //       setPassword(data.password);
+  //       setMobile(data.mobile);
+  //     })
+  //     .catch(error => console.log(error));
+  // }, []);
+
+  useEffect(async () => {
+    const response = await MarketFxApi.get("/user/me");
+    setUser(response.user);
   }, []);
 
-  const handleSubmit = event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Update the profile data by making a POST request to the server
-    fetch('http://localhost:3001/profile', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, password, mobile }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error));
+    const response = await MarketFxApi.patch("/user/update", {
+      name,
+      password,
+      email,
+      mobile,
+    });
+
+    setUser(response.info);
   };
 
   return (
-    <section style={{ backgroundColor: 'white', flex: 3}}>
-    <Header></Header>
-
+    <section style={{ backgroundColor: "white", flex: 3 }}>
       <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="4">
@@ -66,19 +67,25 @@ export default function ProfileSettings() {
                   src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
                   alt="avatar"
                   className="rounded-circle"
-                  style={{ width: '150px' }}
+                  style={{ width: "150px" }}
                   fluid
                 />
                 <br></br>
-                <p className="text-muted mb-1">Maaz Haroon</p><br></br>
-                <p className="text-muted mb-4">Islamabad, Pakistan</p><br></br>
+                <p className="text-muted mb-1">{user && user.name}</p>
+                <br></br>
+                <p className="text-muted mb-4">Islamabad, Pakistan</p>
+                <br></br>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
           <MDBCol lg="8">
             <MDBCard className="h-80">
               <MDBCardBody>
-                <form onSubmit={handleSubmit}>
+                <form
+                  method="POST"
+                  onSubmit={handleSubmit}
+                  autoComplete={"off"}
+                >
                   <MDBRow>
                     <MDBCol sm="3">
                       <MDBCardText>Full Name</MDBCardText>
@@ -86,8 +93,9 @@ export default function ProfileSettings() {
                     <MDBCol sm="9">
                       <input
                         type="text"
+                        placeholder={user.name}
                         value={name}
-                        onChange={event => setName(event.target.value)}
+                        onChange={(event) => setName(event.target.value)}
                         className="form-control"
                       />
                     </MDBCol>
@@ -100,8 +108,9 @@ export default function ProfileSettings() {
                     <MDBCol sm="9">
                       <input
                         type="email"
+                        placeholder={user.email}
                         value={email}
-                        onChange={event => setEmail(event.target.value)}
+                        onChange={(event) => setEmail(event.target.value)}
                         className="form-control"
                       />
                     </MDBCol>
@@ -115,12 +124,12 @@ export default function ProfileSettings() {
                       <input
                         type="password"
                         value={password}
-                        onChange={event => setPassword(event.target.value)}
+                        onChange={(event) => setPassword(event.target.value)}
                         className="form-control"
                       />
                     </MDBCol>
                   </MDBRow>
-                  <hr/>
+                  <hr />
                   <MDBRow>
                     <MDBCol sm="3">
                       <MDBCardText>Mobile</MDBCardText>
@@ -128,24 +137,31 @@ export default function ProfileSettings() {
                     <MDBCol sm="9">
                       <input
                         type="text"
+                        placeholder={user.mobile}
                         value={mobile}
-                        onChange={event => setMobile(event.target.value)}
+                        onChange={(event) => setMobile(event.target.value)}
                         className="form-control"
                       />
                     </MDBCol>
                   </MDBRow>
-                  <hr/>
-                  </form>
-                  </MDBCardBody>
+                  <hr />
+                  <div className="text-center">
+                    <button
+                      style={{ marginBottom: 10 }}
+                      type="submit"
+                      className="btn btn-primary w-100 theme-btn mx-auto"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              </MDBCardBody>
             </MDBCard>
           </MDBCol>
         </MDBRow>
       </MDBContainer>
-      
+
       <br></br>
-      <SubmitButton></SubmitButton>
-      <Footer style={{marginTop:20}}></Footer>
     </section>
   );
 }
-

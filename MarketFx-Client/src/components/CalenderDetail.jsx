@@ -110,9 +110,14 @@ const CalenderDetail = ({ calender }) => {
           <span>{details.previous}</span>
         </EconomicCalenderPreviousData>
 
-        <div className="col-1">
+        <EconomicCalenderPreviousData className="col-2">
+          <NormalWeight>Forecast: </NormalWeight> <br />
+          <span>{details.forcast}</span>
+        </EconomicCalenderPreviousData>
+
+        {/* <div className="col-1">
           <FaAngleDown />
-        </div>
+        </div> */}
       </EconomicCalenderItem>
     </EconomicCalenderContainer>
   );

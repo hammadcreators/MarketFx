@@ -229,10 +229,15 @@ const NormalWeight = styled.span`
   font-weight: normal;
 `;
 
+const Calender = styled.div`
+  height: 400px;
+  overflow: hidden;
+`;
 const Home = () => {
   const [fetchedNews, setFetchedNews] = useState([]);
   const [tab, setTab] = useState("economy");
   const [calender, setCalender] = useState([]);
+  const [pageSize, setPageSize] = useState(10);
   const setTabHandler = async (tab) => {
     setTab(tab);
     await fetchNews(tab);
@@ -251,13 +256,15 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await NewsApi.get(`/everything?q=economy&pageSize=10`);
+        const response = await NewsApi.get(
+          `/everything?q=${tab}&pageSize=${pageSize}`
+        );
         setFetchedNews(response.articles);
       } catch (ex) {
         alert(ex);
       }
     })();
-  }, []);
+  }, [pageSize]);
 
   // Useffect for the calender;
   useEffect(() => {
@@ -322,11 +329,11 @@ const Home = () => {
         <Right>
           {/* Economic Calender */}
 
-          <div>
+          <Calender>
             {calender
               ? calender.map((cal) => <CalenderDetail calender={cal} />)
               : null}
-          </div>
+          </Calender>
 
           {/* <CalenderDetail /> */}
         </Right>
@@ -343,8 +350,8 @@ const Home = () => {
               All News
             </Tab>
             <Tab
-              active={tab == "gold" ? true : false}
-              onClick={() => setTabHandler("gold")}
+              active={tab == "gold xau" ? true : false}
+              onClick={() => setTabHandler("gold xau")}
             >
               Gold News
             </Tab>
@@ -370,7 +377,12 @@ const Home = () => {
               })
             : null}
 
-          <AppButton />
+          <AppButton
+            title={"View More"}
+            onClick={() => {
+              setPageSize(pageSize + 10);
+            }}
+          />
         </Left>
         <Right></Right>
       </MiniContainer>

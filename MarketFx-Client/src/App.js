@@ -14,6 +14,12 @@ import ForexNews from "./screens/ForexNews";
 import CurrencyNews from "./screens/CurrencyNews";
 import CurrencyData from "./screens/CurrencyData";
 import CurrencyGraph from "./screens/CurrencyGraph";
+import ResetPassword from "./screens/Reset-password";
+import Verifyotp from "./screens/Verifyotp";
+import TwoFa from "./screens/2FA";
+import SearchScreen from "./screens/SearchScreen";
+import GoldAnalysis from "./screens/GoldAnalysis";
+import OilAnalysis from "./screens/OilAnalysis";
 
 const App = () => {
   return (
@@ -26,6 +32,9 @@ const App = () => {
           {/*  */}
           <Route index element={<Home />} />
           <Route path="/forgot-password" element={<Forgot />} />
+          <Route path="/2Fa" element={<TwoFa />} />
+          <Route path="/verify-otp/:id" element={<Verifyotp />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/profile" element={<ProfileSettings />} />
           <Route path="/MarketNews" element={<MarketNews />} />
           <Route path="/EconomicCalender" element={<EconomicCalender />} />
@@ -33,10 +42,15 @@ const App = () => {
           <Route path="/CurrencyData" element={<CurrencyData />} />
           <Route path="/ForexNews" element={<ForexNews />} />
           <Route path="/CurrencyNews" element={<CurrencyNews />} />
+          <Route path="/GoldAnalysis" element={<GoldAnalysis />} />
+          <Route path="/OilAnalysis" element={<OilAnalysis />} />
+
           <Route
             path="/dataportal/CurrencyGraph/:passedSymbol"
             element={<CurrencyGraph />}
           />
+
+          <Route path="/search" element={<SearchScreen />} />
         </Route>
       </Routes>
     </BrowserRouter>
