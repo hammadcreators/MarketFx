@@ -7,11 +7,12 @@ import MarketNews from "./screens/marketNews";
 
 import ProfileSettings from "./screens/ProfileSettings";
 import EconomicCalender from "./screens/EconomicCalender";
-import Header from "./components/Header";
 import Layout from "./components/Layout";
 import ResetPassword from "./screens/Reset-password";
 import Verifyotp from "./screens/Verifyotp";
 import TwoFa from "./screens/2Fa";
+import PlanPurchase from "./screens/Plans";
+import Checkout from "./components/CheckoutModal";
 
 
 const App = () => {
@@ -25,6 +26,9 @@ const App = () => {
           {/*  */}
           <Route index element={<Home />} />
           <Route path="/forgot-password" element={<Forgot />} />
+          <Route path="/checkout/:planName" element={<Checkout />} />
+          
+          <Route path="/plans" element={<PlanPurchase />} />
           <Route path="/2Fa" element={<TwoFa />} />
           <Route path="/verify-otp/:id" element={<Verifyotp />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />

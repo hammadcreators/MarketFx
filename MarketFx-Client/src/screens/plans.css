@@ -1,0 +1,35 @@
+
+.plan-purchase-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .plan-purchase-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
+  
+  .plan-card-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  @media (max-width: 768px) {
+    .plan-purchase-container {
+      padding: 20px;
+    }
+    
+    .plan-purchase-container h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    
+    .plan-card-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
