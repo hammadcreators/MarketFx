@@ -7,14 +7,15 @@ let io;
 // const http = require("http");
 // const { Server } = require("socket.io");
 
-// Importin routes
+// Importing routes
 const userRoute = require("./app/routes/User");
 const customerSupportRoute = require("./app/routes/CustomerSupport");
 const watchlistRoute = require("./app/routes/Watchlist");
 const profileRoute = require("./app/routes/ProfileRouter");
 const calenderRoute = require("./app/routes/Calender");
 const dataportal = require("./app/routes/DataPortal");
-
+const CurrencyPair = require("./app/models/CurrencyPair");
+const Cards = require('./app/routes/Cards');
 const PORT = 5000;
 const app = express();
 app.use(cors());
@@ -29,7 +30,7 @@ app.use(cors());
 // io.on("connection", ()=>{
 //   console.log("COnnected ")
 // })
-const url = "mongodb://localhost:27017/MarketFX";
+const url = "mongodb://127.0.0.1:27017/MarketFX";
 
 // Moutin routes
 
@@ -42,11 +43,44 @@ app.use("/watchlist", watchlistRoute);
 app.use("/profile", profileRoute);
 app.use("/calender", calenderRoute);
 app.use("/dataportal", dataportal);
+app.use("/cards", Cards);
+
+const pairs = [
+  { Currency1: "EUR", Currency2: "USD", name: "EUR/USD" },
+  { Currency1: "USD", Currency2: "JPY", name: "USD/JPY" },
+  { Currency1: "GBP", Currency2: "USD", name: "GBP/USD" },
+  { Currency1: "USD", Currency2: "CHF", name: "USD/CHF" },
+  { Currency1: "AUD", Currency2: "USD", name: "AUD/USD" },
+  { Currency1: "NZD", Currency2: "USD", name: "NZD/USD" },
+  { Currency1: "USD", Currency2: "CAD", name: "USD/CAD" },
+  { Currency1: "EUR", Currency2: "JPY", name: "EUR/JPY" },
+  { Currency1: "GBP", Currency2: "JPY", name: "GBP/JPY" },
+  { Currency1: "EUR", Currency2: "GBP", name: "EUR/GBP" },
+  { Currency1: "AUD", Currency2: "JPY", name: "AUD/JPY" },
+  { Currency1: "CHF", Currency2: "JPY", name: "CHF/JPY" },
+  { Currency1: "NZD", Currency2: "JPY", name: "NZD/JPY" },
+  { Currency1: "EUR", Currency2: "CHF", name: "EUR/CHF" },
+  { Currency1: "GBP", Currency2: "CHF", name: "GBP/CHF" },
+  { Currency1: "AUD", Currency2: "CHF", name: "AUD/CHF" },
+  { Currency1: "EUR", Currency2: "AUD", name: "EUR/AUD" },
+  { Currency1: "GBP", Currency2: "AUD", name: "GBP/AUD" },
+  { Currency1: "AUD", Currency2: "NZD", name: "AUD/NZD" },
+];
 
 mongoose
   .connect(url)
-  .then(() => {
+  .then(async () => {
     console.log("Connected to the db");
+    let result = await CurrencyPair.find({});
+    if(result.length === 0){
+      for(let i = 0; i < pairs.length; i++){
+        await CurrencyPair.create({
+          Id: pairs[i].name.replace("/", "_"),
+          Currency1: pairs[i].Currency1,
+          Currency2: pairs[i].Currency2
+        });
+      }
+    }
   })
   .catch((err) => {
     console.log("Failed to connect to the db");
@@ -68,27 +102,6 @@ const serverWithSocket = app.listen(PORT, () => {
   });
 });
 
-const pairs = [
-  { to_Currency: "EUR", From_Currency: "USD", name: "EUR/USD" },
-  { to_Currency: "USD", From_Currency: "JPY", name: "USD/JPY" },
-  { to_Currency: "GBP", From_Currency: "USD", name: "GBP/USD" },
-  { to_Currency: "USD", From_Currency: "CHF", name: "USD/CHF" },
-  { to_Currency: "AUD", From_Currency: "USD", name: "AUD/USD" },
-  { to_Currency: "NZD", From_Currency: "USD", name: "NZD/USD" },
-  { to_Currency: "USD", From_Currency: "CAD", name: "USD/CAD" },
-  { to_Currency: "EUR", From_Currency: "JPY", name: "EUR/JPY" },
-  { to_Currency: "GBP", From_Currency: "JPY", name: "GBP/JPY" },
-  { to_Currency: "EUR", From_Currency: "GBP", name: "EUR/GBP" },
-  { to_Currency: "AUD", From_Currency: "JPY", name: "AUD/JPY" },
-  { to_Currency: "CHF", From_Currency: "JPY", name: "CHF/JPY" },
-  { to_Currency: "NZD", From_Currency: "JPY", name: "NZD/JPY" },
-  { to_Currency: "EUR", From_Currency: "CHF", name: "EUR/CHF" },
-  { to_Currency: "GBP", From_Currency: "CHF", name: "GBP/CHF" },
-  { to_Currency: "AUD", From_Currency: "CHF", name: "AUD/CHF" },
-  { to_Currency: "EUR", From_Currency: "AUD", name: "EUR/AUD" },
-  { to_Currency: "GBP", From_Currency: "AUD", name: "GBP/AUD" },
-  { to_Currency: "AUD", From_Currency: "NZD", name: "AUD/NZD" },
-];
 
 const data = [];
 let x = 0;
@@ -105,7 +118,7 @@ const fetchData = async () => {
       x = 0;
       break;
     }
-    const url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${pairs[x].From_Currency}&to_currency=${pairs[x].to_Currency}&apikey=7BO7JWVYERB11TB9`;
+    const url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${pairs[x].Currency1}&to_currency=${pairs[x].Currency2}&apikey=7BO7JWVYERB11TB9`;
 
     const response = await axios.get(url, {
       headers: {

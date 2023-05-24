@@ -25,9 +25,9 @@ userRouter.use(bodyParser.json());
 // Register the user
 userRouter.post("/register", async (req, res) => {
   console.log("RAN");
-  let { name, password, email, mobile } = req.body;
+  let { name, password, email, mobile, stripeId } = req.body;
   try {
-    console.log({ name, password, email, mobile });
+    console.log(stripeId);
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     password = hash;
@@ -37,6 +37,7 @@ userRouter.post("/register", async (req, res) => {
       password: password,
       email: email,
       mobile: mobile,
+      stripeId: stripeId
     });
 
     // Creattin a token

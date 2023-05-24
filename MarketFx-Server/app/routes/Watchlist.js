@@ -8,7 +8,7 @@ const CurrencyPairModel = require('../models/CurrencyPair');
 router.post("/create/:uid", async (req, res) => {
    let user =  await UserModel.findOne({_id: req.params.uid});
    if(user == null){
-       res.writeHead(404, "User does not exists");
+       res.writeHead(400, "User does not exists");
        res.end();
        return;
    }
