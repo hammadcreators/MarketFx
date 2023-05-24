@@ -1,41 +1,137 @@
 .plan-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 300px;
-    height: 350px;
+    justify-content: space-between;
+  }
+
+.card {
+    width: auto !important;
+    padding: 30px 10px !important;
+}
+
+.background-lining {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 120px;
+}
+
+.card {
+    position: relative;
+    background-color: #282A3A;
+    margin: 0px 10px 0px 0px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.3s ease-in-out;
-  }
-  
-  .plan-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  .plan-card h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .plan-card p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
-  .plan-card button {
-    font-size: 1.2rem;
-    font-weight: bold;
+    padding: 5px 20px;
+    height: 300px;
+    width: 600px;
+}
+
+.hoverable {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.hoverable:hover{
+    transform: scale(1.03, 1.03);
+}
+
+.purchase-card{
+    margin-left: 0 !important;
+    text-decoration: none;
+    padding: 15px !important;
+    cursor: pointer;
+    background-color: #12203a;
     color: white;
-    background-color: #0077b6;
-    border: none;
+    transition: all 0.2s ease-in-out;
     border-radius: 5px;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .plan-card button:hover {
-    background-color: #023e8a;
-  }
+}
+
+.purchase-card:hover{
+    background-color: #1d3560;
+    color: white;
+}
+
+.visa-img {
+    margin-top: 20px;
+    margin-left: 0px;
+    width: 80px;
+    height: 25px;
+}
+
+.items-container {
+    display: flex;
+    margin: 15px 5px 0px 5px;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.items-container h3 {
+    color: white;
+}
+
+.item {
+    margin: 0px 15px 0px 0px;
+    color: white;
+}
+
+.btn-danger {
+    background-color: red;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.text-align-center {
+    text-align: center !important;
+}
+
+.btn-primary {
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background-color: dodgerblue;
+}
+
+.ms-3 {
+    margin-left: 15px;
+}
+
+.ms-5 {
+    margin-left: 30px;
+}
+
+.btn-text-danger {
+    color: red;
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.plan-card a{
+    padding: 0.4rem 1rem;
+    background-color: #12203a;
+    color: white;
+    margin: 1rem;
+    border-radius: 10px;
+
+}
+
+.justify-end {
+    display: flex;
+    justify-content: center;
+}

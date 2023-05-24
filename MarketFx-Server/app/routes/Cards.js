@@ -54,7 +54,7 @@ router.post('/create/:uid', async (req, res) => {
         stripeId: card.id,
         cardNumber: req.body.cardNumber,
         cvv: req.body.cvv,
-        expiryDate: `${req.body.expiry_month}/${req.expiry_year}`,
+        expiryDate: `${req.body.expiry_month}/${req.body.expiry_year}`,
         holderName: req.body.holderName
     });
     res.writeHead(200);
@@ -103,5 +103,26 @@ router.post('/payment/:uid/:cid', async (req, res) => {
     res.write(paymentIntent.id)
     res.end();
 })
+
+router.get('/:uid', async (req, res) => {
+   let  cards = await CardModel.find({userId: req.params.uid});
+   res.writeHead(200);
+   res.write(JSON.stringify(cards));
+   res.end();
+});
+
+router.delete('/:cid', async (req, res) => {
+   let card = await CardModel.findOne({_id: req.params.cid});
+   if(card !== undefined && card !== null) {
+       let result = await CardModel.deleteOne({_id: req.params.cid});
+       res.writeHead(200);
+       res.end();
+   }
+   else {
+       res.writeHead(404);
+       res.write("Card not found");
+       res.end();
+   }
+});
 
 module.exports = router;

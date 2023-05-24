@@ -85,7 +85,6 @@ const Home = () => {
             style={{
               backgroundImage: `url("https://a.c-dn.net/b/2iLBW3/oil-pumps-on-cloud-sky.jpg")`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: 400,
               position: "relative",
               backgroundSize: "cover",
               margin: 20,

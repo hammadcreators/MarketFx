@@ -55,8 +55,8 @@ const Login = () => {
           password,
         });
 
-        console.log(response);
         localStorage.setItem("token", response.token);
+        localStorage.setItem('user', JSON.stringify(response.info));
         window.location.href = "http://localhost:3000";
       } catch (ex) {
         alert(ex.message);

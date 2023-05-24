@@ -28,11 +28,7 @@
     "puppeteer": "^19.7.5",
     "randomstring": "^1.2.3",
     "socket.io": "^4.6.1",
-<<<<<<< HEAD
     "speakeasy": "^2.0.0",
     "stripe": "^12.6.0"
-=======
-    "speakeasy": "^2.0.0"
->>>>>>> 5f39febd9bb63834d47c173779768ba060f1217f
   }
 }

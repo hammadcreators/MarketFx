@@ -12,8 +12,8 @@ export default function App() {
       </MDBDropdownToggle>
       <MDBDropdownMenu>
         <MDBDropdownItem link href='/profile'>Profile</MDBDropdownItem>
-        <MDBDropdownItem link href=''>My Packages</MDBDropdownItem>
-        <MDBDropdownItem link href=''>Add Payment Method</MDBDropdownItem>
+        <MDBDropdownItem link href='/plans'>My Packages</MDBDropdownItem>
+        <MDBDropdownItem link href='/cards'>Add Payment Method</MDBDropdownItem>
         <MDBDropdownItem link href=''>Watchlist</MDBDropdownItem>
       </MDBDropdownMenu>
     </MDBDropdown>

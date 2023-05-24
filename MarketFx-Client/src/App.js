@@ -4,7 +4,7 @@ import Register from "./screens/Register";
 import Forgot from "./screens/Forgot";
 import Home from "./screens/home";
 import MarketNews from "./screens/marketNews";
-
+import PlanCard from "./components/PlanCard";
 import ProfileSettings from "./screens/ProfileSettings";
 import EconomicCalender from "./screens/EconomicCalender";
 import Layout from "./components/Layout";
@@ -22,6 +22,8 @@ import OilAnalysis from "./screens/OilAnalysis";
 import SearchScreen from "./screens/SearchScreen";
 import Checkout from "./components/CheckoutModal";
 import NewsDetail from "./screens/NewsDetail";
+import CardPage from "./screens/CardPage";
+import CheckoutModal from "./components/CheckoutModal";
 const App = () => {
   return (
     <BrowserRouter>
@@ -34,7 +36,6 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/forgot-password" element={<Forgot />} />
           <Route path="/checkout/:planName" element={<Checkout />} />
-
           <Route path="/plans" element={<PlanPurchase />} />
           <Route path="/2Fa" element={<TwoFa />} />
           <Route path="/verify-otp/:id" element={<Verifyotp />} />
@@ -49,12 +50,12 @@ const App = () => {
           <Route path="/GoldAnalysis" element={<GoldAnalysis />} />
           <Route path="/OilAnalysis" element={<OilAnalysis />} />
           <Route path="/NewsDetail" element={<NewsDetail />} />
-
+          <Route path="/cards" element={<CardPage />} />
+          <Route path="/addcard" element={<CheckoutModal />} />
           <Route
             path="/dataportal/CurrencyGraph/:passedSymbol"
             element={<CurrencyGraph />}
           />
-
           <Route path="/search" element={<SearchScreen />} />
         </Route>
       </Routes>

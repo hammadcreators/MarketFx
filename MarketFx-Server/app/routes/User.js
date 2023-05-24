@@ -24,8 +24,6 @@ userRouter.use(bodyParser.json());
 
 // Register the user
 userRouter.post("/register", async (req, res) => {
-  console.log("RAN");
-  let { name, password, email, mobile, stripeId } = req.body;
   try {
     console.log(stripeId);
     const salt = await bcrypt.genSalt(10);
