@@ -275,7 +275,7 @@ const Home = () => {
           "/calender/economicCalender/tomorrow"
         );
         setCalender(response.calender);
-        // console.log(response.calender);
+        console.log(response.calender);
       } catch (ex) {}
     })();
   }, []);

@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
+import Nav from "react-bootstrap/Nav";
+import {Link} from "react-router-dom";
 
 
 // For the news component
@@ -46,6 +48,7 @@ const NewsInfoDescription = styled.p`
 
 const NewsComponent = ({ news }) => {
   const { urlToImage, title, publishedAt, description } = news;
+    const objectString = JSON.stringify(news);
   return (
     <NewsContainer>
       {
@@ -55,9 +58,7 @@ const NewsComponent = ({ news }) => {
           : null
       }
       <NewsInfo>
-        <NewsInfoTitle>
-          {title}
-        </NewsInfoTitle>
+        <Link to={`/NewsDetail?object=${encodeURIComponent(objectString)}`}>{title}</Link>
         <NewsInfoTime>{publishedAt}</NewsInfoTime>
         <NewsInfoDescription>
           {description}

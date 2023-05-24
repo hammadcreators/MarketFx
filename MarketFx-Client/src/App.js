@@ -15,11 +15,13 @@ import CurrencyData from "./screens/CurrencyData";
 import CurrencyGraph from "./screens/CurrencyGraph";
 import ResetPassword from "./screens/Reset-password";
 import Verifyotp from "./screens/Verifyotp";
-import TwoFa from "./screens/2Fa";
+import TwoFa from "./screens/2FA";
 import PlanPurchase from "./screens/Plans";
+import GoldAnalysis from "./screens/GoldAnalysis";
+import OilAnalysis from "./screens/OilAnalysis";
+import SearchScreen from "./screens/SearchScreen";
 import Checkout from "./components/CheckoutModal";
-
-
+import NewsDetail from "./screens/NewsDetail";
 const App = () => {
   return (
     <BrowserRouter>
@@ -32,7 +34,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/forgot-password" element={<Forgot />} />
           <Route path="/checkout/:planName" element={<Checkout />} />
-          
+
           <Route path="/plans" element={<PlanPurchase />} />
           <Route path="/2Fa" element={<TwoFa />} />
           <Route path="/verify-otp/:id" element={<Verifyotp />} />
@@ -46,6 +48,7 @@ const App = () => {
           <Route path="/CurrencyNews" element={<CurrencyNews />} />
           <Route path="/GoldAnalysis" element={<GoldAnalysis />} />
           <Route path="/OilAnalysis" element={<OilAnalysis />} />
+          <Route path="/NewsDetail" element={<NewsDetail />} />
 
           <Route
             path="/dataportal/CurrencyGraph/:passedSymbol"
