@@ -68,51 +68,51 @@ const NormalWeight = styled.span`
 const CalenderDetail = ({ calender }) => {
   console.log(calender);
 
-  const details = {
-    date: calender[0],
-    time: calender[1],
-    cur: calender[2],
-    impact: () => {
-      if (calender[3] === "bull1") return "Low";
-      if (calender[3] === "bull2") return "Medium";
-      if (calender[3] === "bull3") return "High";
-    },
-    event: calender[4],
-    actual: calender[5],
-    forcast: calender[6],
-    previous: calender[7],
-  };
+  // const details = {
+  //   date: calender[0],
+  //   time: calender[1],
+  //   cur: calender[2],
+  //   impact: () => {
+  //     if (calender[3] === "bull1") return "Low";
+  //     if (calender[3] === "bull2") return "Medium";
+  //     if (calender[3] === "bull3") return "High";
+  //   },
+  //   event: calender[4],
+  //   actual: calender[5],
+  //   forcast: calender[6],
+  //   previous: calender[7],
+  // };
   return (
     <EconomicCalenderContainer>
       {/* This will have the border */}
 
       <EconomicCalenderItem className="row align-items-center">
         {/* ?Impact */}
-        <EconomicCalenderImpact impact={details.impact()} className="col-1">
-          <span> {details.impact()} </span>
+        <EconomicCalenderImpact impact={calender.impact} className="col-1">
+          <span> {calender.impact} </span>
         </EconomicCalenderImpact>
 
         {/* Tilte */}
         <EconomicCalenderTitle className="col-5">
           <span>
-            {details.event} <NormalWeight>(FEB)</NormalWeight>{" "}
+            {calender.event} <NormalWeight>(FEB)</NormalWeight>{" "}
           </span>
         </EconomicCalenderTitle>
         {/* Actual Data */}
         <EconomicCalenderActualData className="col-2">
           <NormalWeight>Actual: </NormalWeight> <br />
-          <span>{details.actual}</span>
+          <span>{calender.actual}</span>
         </EconomicCalenderActualData>
 
         {/* Previous Data */}
         <EconomicCalenderPreviousData className="col-2">
           <NormalWeight>Previous: </NormalWeight> <br />
-          <span>{details.previous}</span>
+          <span>{calender.previous}</span>
         </EconomicCalenderPreviousData>
 
         <EconomicCalenderPreviousData className="col-2">
           <NormalWeight>Forecast: </NormalWeight> <br />
-          <span>{details.forcast}</span>
+          <span>{calender.forcast}</span>
         </EconomicCalenderPreviousData>
 
         {/* <div className="col-1">

@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 var cors = require("cors");
 const axios = require("axios");
-
+const puppeteer = require("puppeteer");
 let io;
 // const http = require("http");
 // const { Server } = require("socket.io");
@@ -14,6 +14,7 @@ const watchlistRoute = require("./app/routes/Watchlist");
 const profileRoute = require("./app/routes/ProfileRouter");
 const calenderRoute = require("./app/routes/Calender");
 const dataportal = require("./app/routes/DataPortal");
+const { EconomicCalender } = require("./app/models/EconomicCalender");
 
 const PORT = 5000;
 const app = express();
@@ -123,3 +124,96 @@ fetchData();
 setInterval(() => {
   fetchData();
 }, 60000);
+
+const fetchEconomicCalendar = async (time) => {
+  try {
+    const buttons = {
+      yesterday: "timeFrame_yesterday",
+      today: "timeFrame_today",
+      tomorrow: "timeFrame_tomorrow",
+      thisweek: "timeFrame_thisWeek",
+      nextweek: "timeFrame_nextWeek",
+    };
+
+    const browser = await puppeteer.launch({
+      executablePath:
+        "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    });
+    const page = await browser.newPage();
+
+    await page.goto("https://www.investing.com/economic-calendar/", {
+      timeout: 0,
+    });
+
+    // Wait for the button to appear before clicking
+    await page.waitForSelector(`#${buttons[time]}`);
+
+    await page.click(`#${buttons[time]}`);
+    // Wait for a delay of 2 seconds
+    await page.waitForTimeout(3000);
+    // Wait for the HTML to update after clicking the button
+    await page.waitForSelector(".js-event-item");
+
+    const tableData = await page.$$eval(".js-event-item", (rows) => {
+      return rows.map((row) => {
+        const date = row.getAttribute("data-event-datetime");
+        const rowData = [date];
+        const cells = Array.from(row.querySelectorAll("td"));
+        cells.forEach((cell) => {
+          const impact = cell.getAttribute("data-img_key");
+          const text = cell.textContent.trim();
+          if (!text && impact) {
+            rowData.push(impact);
+          } else if (text.length >= 1) {
+            rowData.push(text);
+          }
+        });
+        return rowData;
+      });
+    });
+    const getImpact = (calender) => {
+      if (calender === "bull1") return "Low";
+      if (calender === "bull2") return "Medium";
+      if (calender === "bull3") return "High";
+    };
+    // After fetching the data; lemem save it to the Database;
+    tableData.forEach(async (calender) => {
+      const economicCalender = await EconomicCalender.create({
+        period: time,
+        date: calender[0],
+        time: calender[1],
+        cur: calender[2],
+        impact: getImpact(calender[3]),
+        event: calender[4],
+        actual: calender[5],
+        forcast: calender[6],
+        previous: calender[7],
+      });
+    });
+    await browser.close();
+    return true;
+  } catch (ex) {
+    console.error(ex);
+  }
+};
+
+const setEconomicCalender = async () => {
+  // Clear the table;
+
+  await EconomicCalender.deleteMany({});
+  console.log("setEconomicCalender RAN");
+  // Scrap all the data and save it to the database
+  fetchEconomicCalendar("nextweek");
+  fetchEconomicCalendar("thisweek");
+
+  setTimeout(() => {
+    fetchEconomicCalendar("yesterday");
+
+    fetchEconomicCalendar("today");
+  }, 5000);
+
+  fetchEconomicCalendar("tomorrow");
+};
+// setEconomicCalender();
+
+// setInterval(setEconomicCalender, 86400000);

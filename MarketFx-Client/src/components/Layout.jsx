@@ -5,6 +5,7 @@ import AppFooter from "./AppFooter";
 import Header from "./Header";
 
 const Container = styled.div`
+  flex-grow: 1;
   display: flex;
   margin: 20px auto;
   flex-direction: column;

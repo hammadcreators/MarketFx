@@ -20,32 +20,45 @@ const StyledButton = styled.button`
 const EconomicCalender = ({ sidebar }) => {
   console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
   const [calender, setCalender] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [time, setTime] = useState("today");
   useEffect(() => {
     console.log("useEffect called");
+    setLoading(true);
     (async () => {
       try {
         const response = await MarketFxApi.get(
           "/calender/economicCalender/today"
         );
+        console.log(response);
         setCalender(response.calender);
+        setLoading(false);
+
         // console.log(response.calender);
-      } catch (ex) {}
+      } catch (ex) {
+        setLoading(false);
+      }
     })();
   }, []);
 
   const fetchEconomicNews = async (time) => {
     try {
+      setLoading(true);
+
       const response = await MarketFxApi.get(
         `/calender/economicCalender/${time}`
       );
       setCalender(response.calender);
+      setLoading(false);
+
       // console.log(response.calender);
-    } catch (ex) {}
+    } catch (ex) {
+      setLoading(false);
+    }
   };
   return (
     <>
-      <div className="row mb-3">
+      <div className="row mb-3 ">
         <div className="offset-3 col-9">
           <StyledButton
             active={time === "yesterday" ? true : false}
@@ -106,7 +119,7 @@ const EconomicCalender = ({ sidebar }) => {
           </StyledButton>
         </div>
       </div>
-      {calender.length >= 1 ? (
+      {!loading && calender.length >= 1 ? (
         <div className="row">
           <div className="col-3 border">
             {calender
@@ -120,19 +133,25 @@ const EconomicCalender = ({ sidebar }) => {
           </div>
         </div>
       ) : (
-        <div className="row align-items-center justify-content-center">
-          <div className="col-2">
-            <TailSpin
-              height="80"
-              width="80"
-              color="#4fa94d"
-              ariaLabel="tail-spin-loading"
-              radius="1"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-            />
-          </div>
+        <div className="row align-items-center justify-content-center flex-grow-1">
+          {loading ? (
+            <div className="col-2">
+              <TailSpin
+                height="80"
+                width="80"
+                color="#4fa94d"
+                ariaLabel="tail-spin-loading"
+                radius="1"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            </div>
+          ) : (
+            <div className="col-12 text-center">
+              <p>No Events Found </p>
+            </div>
+          )}
         </div>
       )}
     </>

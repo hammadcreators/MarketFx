@@ -65,7 +65,7 @@ const Header = () => {
     <>
       <StyledNavbar className="shadow-0" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img
               src={Logo}
               width="100"
@@ -81,7 +81,18 @@ const Header = () => {
                 href={!token ? "/login" : null}
                 // onClick={token ? localStorage.removeItem("token") : null}
               >
-                {token ? "LOGOUT" : "LOGIN"}
+                {token ? (
+                  <span
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      setToken("");
+                    }}
+                  >
+                    LOGOUT
+                  </span>
+                ) : (
+                  "LOGIN"
+                )}
               </Nav.Link>
               <Nav.Link href="/register">REGISTER</Nav.Link>
             </Nav>

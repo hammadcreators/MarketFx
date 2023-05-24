@@ -70,10 +70,10 @@ const CalenderSidebar = ({ calender }) => {
     <StyledDiv>
       <div className="row align-items-center">
         <div className="col-6">
-          <StyledTime>{details.time}</StyledTime>
+          <StyledTime>{calender.time}</StyledTime>
         </div>
         <div className="col-6">
-          <StyledCur>{details.cur}</StyledCur>
+          <StyledCur>{calender.cur}</StyledCur>
         </div>
       </div>
     </StyledDiv>
