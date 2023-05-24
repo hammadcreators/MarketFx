@@ -85,6 +85,7 @@ const Header = () => {
                   <span
                     onClick={() => {
                       localStorage.removeItem("token");
+                      localStorage.removeItem('user');
                       setToken("");
                     }}
                   >

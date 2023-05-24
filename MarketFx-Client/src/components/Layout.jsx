@@ -1,5 +1,5 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, {useEffect} from "react";
+import {Outlet, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import AppFooter from "./AppFooter";
 import Header from "./Header";
@@ -16,6 +16,15 @@ const Container = styled.div`
   width: 70%;
 `;
 const Layout = () => {
+    let user = JSON.parse(localStorage.getItem('user'));
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        if(user === undefined || user === null) {
+            navigate("/login");
+        }
+    }, []);
+
   return (
     <>
       <Header />

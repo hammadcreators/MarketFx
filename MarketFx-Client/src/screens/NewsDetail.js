@@ -2,7 +2,7 @@ import styled from "styled-components";
 import AppFooter from "../components/AppFooter";
 import Header from "../components/Header";
 import { useLocation } from 'react-router-dom';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 const Container = styled.div`
   display: flex;
@@ -38,19 +38,32 @@ const TabsContainer = styled.div`
   height: max-content;
 `;
 
-
-
-
 const NewsDetail = () => {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const objectString = queryParams.get('object');
     const myObject = JSON.parse(objectString);
+    let [newSentiment, setNewsSentiment] = useState([]);
 
+    useEffect(() => {
+        fetch('http://localhost:8000/model/', {
+            crossDomain:true,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({Sentence: myObject.title})
+        })
+            .then(async res => {
+                if(res.status === 200) {
+                    let data = await res.json();
+                    setNewsSentiment(data);
+                }
+            })
+    }, []);
 
     return (
-
         <div>
             <Container>
                 <h2>{myObject.title}</h2>
@@ -60,10 +73,9 @@ const NewsDetail = () => {
                 <Left column={true}>
                     {myObject.content}
                 </Left>
-
+                <p>Sentiment: {newSentiment}</p>
             </Container>
         </div>
-
     );
 };
 
