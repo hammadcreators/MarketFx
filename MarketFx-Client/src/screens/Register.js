@@ -62,6 +62,7 @@ const Register = () => {
           password,
           email,
           mobile: contactNumber,
+          stripeId: ''
         });
 
         console.log(response);

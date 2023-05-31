@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import AppFooter from "./AppFooter";
 import Header from "./Header";
@@ -18,10 +18,13 @@ const Container = styled.div`
 const Layout = () => {
     let user = JSON.parse(localStorage.getItem('user'));
     let navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        if(user === undefined || user === null) {
-            navigate("/login");
+        if(location.pathname !== '/' && location.pathname !== '/register'){
+            if(user === undefined || user === null) {
+                navigate("/login");
+            }
         }
     }, []);
 

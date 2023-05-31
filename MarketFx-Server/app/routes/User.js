@@ -25,20 +25,19 @@ userRouter.use(bodyParser.json());
 // Register the user
 userRouter.post("/register", async (req, res) => {
   try {
-    console.log(stripeId);
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
-    password = hash;
+    const hash = await bcrypt.hash(req.body.password, salt);
+    let password = hash;
 
     const newUser = await User.create({
-      name: name,
+      name: req.body.name,
       password: password,
-      email: email,
-      mobile: mobile,
-      stripeId: stripeId
+      email: req.body.email,
+      mobile: req.body.mobile,
+      stripeId: '',
     });
 
-    // Creattin a token
+    // Creating a token
     const token = jwt.sign({ user: newUser }, SECRET_KEY);
     res.status(201).json({
       message: "User has been registered",
